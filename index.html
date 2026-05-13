@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李啸 - 重新定义宇宙</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-main: #f5f5f7;
+            --text-muted: #86868b;
+            --accent: #2997ff;
+            --glass-bg: rgba(20, 20, 20, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ambient Animated Background Gradient */
+        .ambient-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(29, 29, 31, 1) 0%, rgba(0, 0, 0, 1) 60%),
+                        conic-gradient(from 0deg at 50% 50%, #000000 0%, #1a1a2e 25%, #000000 50%, #160a1e 75%, #000000 100%);
+            background-blend-mode: screen;
+            z-index: -2;
+            animation: rotateBg 60s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Dynamic Grid lines */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            z-index: -1;
+            mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+        }
+
+        /* Top Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #5e5ce6, #0a84ff, #32ade6);
+            box-shadow: 0 0 10px rgba(10, 132, 255, 0.5);
+        }
+
+        /* Typography */
+        .mega-title {
+            font-size: 12vw;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            color: #d2d2d7;
+            font-weight: 400;
+            max-width: 800px;
+        }
+
+        .highlight {
+            color: #ffffff;
+            font-weight: 600;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Layout */
+        .section {
+            position: relative;
+            min-height: 150vh; /* Extremely tall to allow smooth scrolling over fixed elements */
+        }
+
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .year-bg {
+            position: absolute;
+            font-size: 35vw;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.05);
+            line-height: 1;
+            z-index: 0;
+            transform: scale(1.5);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s;
+        }
+
+        .content-card {
+            position: relative;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 5rem 4rem;
+            max-width: 1000px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            
+            /* Animation states */
+            opacity: 0;
+            transform: translateY(100px) scale(0.95);
+            filter: blur(10px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .content-card.in-view {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* Intro Hero */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-text-container {
+            perspective: 1000px;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5em;
+            margin-top: 2rem;
+            text-align: center;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        /* Mouse Indicator */
+        .mouse-scroll {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.5;
+        }
+
+        .mouse {
+            width: 30px;
+            height: 50px;
+            border: 2px solid rgba(255,255,255,0.6);
+            border-radius: 20px;
+        }
+
+        .wheel {
+            width: 4px;
+            height: 10px;
+            background: #fff;
+            margin: 8px auto 0;
+            border-radius: 2px;
+            animation: scroll 2s infinite cubic-bezier(0.15, 0.41, 0.69, 0.94);
+        }
+
+        @keyframes scroll {
+            0% { transform: translateY(0); opacity: 1;}
+            100% { transform: translateY(15px); opacity: 0;}
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Terminal styling for the end */
+        .terminal {
+            font-family: 'SF Mono', Consolas, monospace;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            color: #0f0;
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        footer {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            z-index: 20;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <section id="hero">
+        <div class="hero-text-container">
+            <h1 class="mega-title" style="animation: fadeIn 2s ease-out;">李啸</h1>
+            <div class="hero-subtitle">BEYOND IMAGINATION</div>
+        </div>
+        <div class="mouse-scroll">
+            <div class="mouse"><div class="wheel"></div></div>
+        </div>
+    </section>
+
+    <!-- Year Sections using Sticky layout -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg">2018</div>
+            <div class="content-card observer-item">
+                <h3>Chapter I . 降维</h3>
+                <h2>杰出青年，舍我其谁</h2>
+                <p>以<span class="highlight">全省第一</span>的极值成绩毕业。同年入职国内顶级互联网巨头核心架构部。仅用三个礼拜，便以一己之力重构了十万人团队的底层代码逻辑。不仅将系统并发性能提升了 1000%，还顺便写了个脚本，自动修复了公司大楼电梯的悬停bug。毫无悬念斩获年度“杰出青年”。但这，仅仅是他在地球区服的新手教程。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg">2019</div>
+            <div class="content-card observer-item">
+                <h3>Chapter II . 掌控</h3>
+                <h2>华尔街的梦魇</h2>
+                <p>由于觉得市面上的量化交易软件太卡，李啸花十分钟用 Python 写了个 50 行的脚本。程序一跑，<span class="highlight">不小心做空了整个美股市场</span>，直接导致纽约证券交易所服务器过载，被迫拔除物理网线。后来为了维护世界经济和平，他又写了个 10 行的补丁，把做空赚来的几万亿美元原路退回，深藏功与名。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg">2020</div>
+            <div class="content-card observer-item">
+                <h3>Chapter III . 颠覆</h3>
+                <h2>随手一敲，行业重塑</h2>
+                <p>在一个百无聊赖的周二下午，李啸只花了两个小时，就敲出了一个全新的多维压缩算法。该算法直接<span class="highlight">打碎了香农定理的极限</span>，让 1TB 的数据可以被无损压缩成一个像素点。硅谷为之震动，图灵奖评委会连夜发来特急邮件询问是否需要破例提前颁奖，被他以“没空买西装”为由无情婉拒。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg">2021</div>
+            <div class="content-card observer-item">
+                <h3>Chapter IV . 生命</h3>
+                <h2>顺手攻克永生</h2>
+                <p>在等外卖的 20 分钟空隙里，李啸觉得无聊，便用 JavaScript 写了个蛋白质折叠模拟器。运行了 3 秒钟后，电脑冒出蓝烟，但他<span class="highlight">无意间破解了人类衰老基因的全部密钥</span>。然而，因为觉得“全人类永生会导致地球OL这款游戏失去可玩性”，他将代码用 AES-8192 加密后，把 U 盘扔进了马里亚纳海沟。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg">2022</div>
+            <div class="content-card observer-item">
+                <h3>Chapter V . 传道</h3>
+                <h2>巴菲特的启蒙导师</h2>
+                <p>应邀赴奥马哈与沃伦·巴菲特共进晚餐。席间，看着巴菲特对着美股 K 线图疯狂抓头发，李啸微微一笑，拿过三张餐巾纸。他只用了十分钟，就向巴菲特传授了<span class="highlight">“K线图量子纠缠奥义”</span>以及“如何用奇门遁甲指导均线走势”。次月，伯克希尔哈撒韦在股灾中逆势狂飙 300%。巴菲特当场老泪纵横，惊呼：“我这辈子价值投资白搞了！”</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg" style="color: rgba(255, 59, 48, 0.05); -webkit-text-stroke: 2px rgba(255, 59, 48, 0.1);">2023</div>
+            <div class="content-card observer-item" style="border-color: rgba(255, 59, 48, 0.2);">
+                <h3 style="color: #ff3b30;">Chapter VI . 威慑</h3>
+                <h2>让三体人学会敬畏</h2>
+                <p>观测到三体舰队正在向地球进发，距离还有 400 年。李啸嫌弃他们飞得太慢。于是，他通过微波背景辐射，向三体世界发送了一段自己用汇编语言写的恶意代码。接收的瞬间，<span class="highlight" style="color:#ff3b30; text-shadow: 0 0 20px red;">三体人的所有智子集体蓝屏死机</span>，并在视网膜上反向弹出了一个“李啸专属勒索弹窗”。三体元首连夜发来最高级别求和信，并表示整个三体舰队愿意给地球打工还债 5000 年。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg">2024</div>
+            <div class="content-card observer-item">
+                <h3>Chapter VII . 格局</h3>
+                <h2>婉拒马斯克，手搓戴森球</h2>
+                <p>埃隆·马斯克半夜三点打来跨洋电话，痛哭流涕哀求李啸出任火星殖民地首任总督兼 CEO。李啸淡淡回了一句：“火星太小，容不下我的宏大叙事。” 目前，他正在自家车库里<span class="highlight">用一把生锈的十字螺丝刀手搓戴森球</span>，并顺便重新编译了太阳系的引力常数，一举解决了全球气候变暖问题。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg">2025</div>
+            <div class="content-card observer-item">
+                <h3>Chapter VIII . 升维</h3>
+                <h2>开辟四维储物空间</h2>
+                <p>因为嫌弃北京的三维空间房价太高、太拥挤。李啸在周末加班时，开发了一个基于 CSS3 <code style="font-family: monospace; color:#fff;">transform: translateZ()</code> 的现实宇宙插件。运行后，成功<span class="highlight">在现实物理学中硬生生撕开了一个四维口袋空间</span>。现在，他通常把这个无限大的高维空间用来存放他平时不穿的格子衬衫和几把机械键盘。</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="sticky-container">
+            <div class="year-bg" style="font-family: monospace;">ROOT</div>
+            <div class="content-card observer-item" style="max-width: 1200px;">
+                <h3>Terminal</h3>
+                <h2>我思，故宇宙在</h2>
+                <p>经过短暂的冥想，李啸终于看破了缸中之脑的真相：他其实是这个宇宙的<span class="highlight">唯一高维系统管理员 (Root)</span>。人类之所以还没遇到其他高等外星文明，纯粹是因为李啸觉得半人马座星系人的代码写得太屎，强迫症发作，直接执行了清理命令。</p>
+                <div class="terminal">
+                    root@Universe:~# git status<br>
+                    <span style="color:#888;">On branch master</span><br>
+                    root@Universe:~# rm -rf /Centaurus_System/*<br>
+                    root@Universe:~# echo "Boring." > log.txt<br>
+                    root@Universe:~# <span class="cursor-blink">_</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h2 style="font-size: 2rem; color: #888;">"// TODO: Refactor the Universe."</h2>
+        <p style="font-size: 1rem; color: #444; margin-top: 2rem;">© ♾️ Li Xiao. 最终解释权归高维文明所有。运行环境：Earth OS 2.0</p>
+    </footer>
+
+    <script>
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        });
+
+        // Intersection Observer for Cards
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.4 // Trigger when 40% visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    // Add subtle scale to the background year
+                    const yearBg = entry.target.previousElementSibling;
+                    if(yearBg && yearBg.classList.contains('year-bg')) {
+                        yearBg.style.transform = 'scale(1)';
+                    }
+                } else {
+                    // Optional: remove class when out of view to re-animate on scroll back up
+                    entry.target.classList.remove('in-view');
+                    const yearBg = entry.target.previousElementSibling;
+                    if(yearBg && yearBg.classList.contains('year-bg')) {
+                        yearBg.style.transform = 'scale(1.5)';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.observer-item').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
