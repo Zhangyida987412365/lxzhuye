@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zou Yuhang · Architect of Desire</title>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Raleway:wght@200;300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Serif+SC:wght@200;300;400&family=Raleway:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -75,6 +75,19 @@
   @keyframes pulse {
     0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
     50% { opacity: 1; transform: translate(-50%,-50%) scale(1.15); }
+  }
+
+  .hero-name {
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 300;
+    letter-spacing: 0.8em;
+    margin-right: -0.8em; /* 修正居中由于字间距造成的偏移 */
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp 1.2s 0.1s cubic-bezier(0.23,1,0.32,1) forwards;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 20px rgba(255,255,255,0.1);
   }
 
   .hero-eyebrow {
@@ -387,6 +400,7 @@
 <!-- ── HERO ── -->
 <div id="hero">
   <div class="spotlight"></div>
+  <h2 class="hero-name">邹宇航</h2>
   <p class="hero-eyebrow">Architect of Desire · 2018 – ∞</p>
   <h1 class="hero-title">The ones who control<br>the ledger</h1>
   <p class="hero-sub">are the ones who control the world</p>
