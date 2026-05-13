@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邹宇航 - 赛博海王与资本暗主</title>
+    <style>
+        :root {
+            --bg-color: #050005; /* Extremely dark reddish-purple */
+            --neon-red: #ff2a2a;
+            --neon-pink: #ff00ff;
+            --gold: #ffd700;
+            --text-main: #f0f0f0;
+            --glass-bg: rgba(30, 0, 15, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 0, 0, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.05), transparent 25%);
+        }
+
+        /* Hotpot Chili Particles (pure CSS) */
+        .spicy-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background-image: radial-gradient(#ff2a2a 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            animation: floatingChili 20s linear infinite;
+        }
+
+        @keyframes floatingChili {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 1000px; }
+        }
+
+        /* Glitch Effect for Title */
+        .glitch {
+            font-size: 10vw;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 var(--neon-red), -0.025em -0.05em 0 var(--neon-pink),
+                         0.025em 0.05em 0 var(--gold);
+            animation: glitch 1s infinite;
+            background: linear-gradient(to right, var(--neon-red), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.05em;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--neon-red), -0.025em -0.05em 0 var(--neon-pink), 0.025em 0.05em 0 var(--gold); }
+            14% { text-shadow: 0.05em 0 0 var(--neon-red), -0.025em -0.05em 0 var(--neon-pink), 0.025em 0.05em 0 var(--gold); }
+            15% { text-shadow: -0.05em -0.025em 0 var(--neon-red), 0.025em 0.025em 0 var(--neon-pink), -0.05em -0.05em 0 var(--gold); }
+            49% { text-shadow: -0.05em -0.025em 0 var(--neon-red), 0.025em 0.025em 0 var(--neon-pink), -0.05em -0.05em 0 var(--gold); }
+            50% { text-shadow: 0.025em 0.05em 0 var(--neon-red), 0.05em 0 0 var(--neon-pink), 0 -0.05em 0 var(--gold); }
+            99% { text-shadow: 0.025em 0.05em 0 var(--neon-red), 0.05em 0 0 var(--neon-pink), 0 -0.05em 0 var(--gold); }
+            100% { text-shadow: -0.025em 0 0 var(--neon-red), -0.025em -0.025em 0 var(--neon-pink), -0.025em -0.05em 0 var(--gold); }
+        }
+
+        .section {
+            min-height: 120vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 42, 42, 0.2);
+            border-radius: 20px;
+            padding: 4rem;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.1), inset 0 0 20px rgba(255, 215, 0, 0.05);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Card Neon Glow Border Effect */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+            animation: scanline 4s linear infinite;
+        }
+
+        @keyframes scanline {
+            100% { left: 200%; }
+        }
+
+        .card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-red);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 5px;
+        }
+
+        p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .highlight-red {
+            color: var(--neon-red);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255,42,42,0.5);
+        }
+
+        .highlight-gold {
+            color: var(--gold);
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255,215,0,0.5);
+        }
+
+        .highlight-pink {
+            color: var(--neon-pink);
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255,0,255,0.5);
+        }
+
+        .bg-text {
+            position: absolute;
+            font-size: 15rem;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 42, 42, 0.05);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            white-space: nowrap;
+        }
+
+        #hero {
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(30,0,0,1) 0%, #000 100%);
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-top: 1rem;
+            letter-spacing: 0.2em;
+        }
+        
+        .origin-tag {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 5px 15px;
+            border: 1px solid var(--neon-red);
+            color: var(--neon-red);
+            border-radius: 20px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            animation: pulseBg 2s infinite;
+        }
+
+        @keyframes pulseBg {
+            0%, 100% { box-shadow: 0 0 5px var(--neon-red); }
+            50% { box-shadow: 0 0 20px var(--neon-red); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="spicy-particles"></div>
+
+    <section id="hero" class="section">
+        <h1 class="glitch" data-text="邹宇航">邹宇航</h1>
+        <div class="subtitle">资本暗主 × 赛博海王</div>
+        <div class="origin-tag">SICHUAN · MEISHAN · HOTPOT BLOOD</div>
+    </section>
+
+    <section class="section">
+        <div class="bg-text">ICBC</div>
+        <div class="card">
+            <h3>[ 阶段一：潜伏 ]</h3>
+            <h2>工商银行的上帝之手</h2>
+            <p>世人以为他只是四川眉山工商银行里一个平平无奇的记账员。殊不知，他手中那把包浆的算盘，连接着全球金融的命脉。每次他用红笔勾销一笔账目，<span class="highlight-red">华尔街的道琼斯指数就会不可控地颤抖一次</span>。他不是在记账，他是在宏观调控整个地球的 GDP。据说，2008 年的次贷危机，仅仅是因为他在吃麻辣火锅时，一滴红油不小心滴在了账本的“卖出”键上。</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="bg-text">RPA</div>
+        <div class="card" style="border-color: rgba(255, 215, 0, 0.3);">
+            <h3 style="color: var(--text-main);">[ 阶段二：降维打击 ]</h3>
+            <h2 style="color: var(--gold); text-shadow: 0 0 10px var(--gold);">影刀之神觉醒</h2>
+            <p>玩腻了全球资本市场后，邹宇航觉得人类的操作太慢了。他跳槽转战 RPA 领域，入职影刀。上岗第一天，他花了半小时写了一个名为“天网”的底层自动化脚本。<span class="highlight-gold">这个脚本不仅瞬间完成了全公司未来十年的 KPI，还自动顺着网线把竞争对手的服务器格式化了</span>。老板看到后吓得当场要交出董事长大印，被他以“当老板影响我下班去吃串串”为由拒绝。</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="bg-text">PLAYBOY</div>
+        <div class="card" style="border-color: rgba(255, 0, 255, 0.3); background: rgba(30, 0, 30, 0.6);">
+            <h3 style="color: var(--neon-pink);">[ 阶段三：多线程海王 ]</h3>
+            <h2 style="color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink);">量子级时间管理大师</h2>
+            <p>不要用普通渣男的眼光看他，那是对他技术的侮辱。作为一个拥有顶级架构思维的男人，他把“玩女人”变成了一个超大规模分布式并发系统。他用影刀 RPA 编写了恋爱机器人矩阵：<span class="highlight-pink">自动秒回微信、自动按情绪波动算法购买奶茶、自动生成土味情话</span>。巅峰时期，他同时维持了 108 个并行恋爱线程（女友），且没有发生任何内存泄漏或进程死锁（翻车）。在夜店，他不用睁眼，心率传感器就能自动帮他锁定全场最靓的卡座。</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="bg-text">MEISHAN</div>
+        <div class="card">
+            <h3>[ 终章：归隐 ]</h3>
+            <h2>沸腾的牛油与钢铁意志</h2>
+            <p>如今的邹宇航，大隐隐于市。医学检测表明，他的血管里流淌的早已不是血液，而是<span class="highlight-red">四川眉山特级沸腾牛油火锅底料</span>。他每天坐在火锅店里，看着满天星辰。他的 RPA 机器人正在云端自动帮他打理着全球的资产和几百个心碎女孩的晚安问候。有人问他成功的秘诀是什么，他夹起一片毛肚，在滚烫的红油中七上八下，淡淡地说：“<span class="highlight-gold">人生就像写脚本，只要异常抓得准，海王也能做得很安稳。</span>”</p>
+        </div>
+    </section>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
