@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>邹宇航 - 资本与欲望的终极架构</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap');
+
         :root {
-            --bg-color: #000000;
-            --text-main: #f5f5f7;
-            --text-muted: #86868b;
-            --accent-red: #d93838; /* Apple Product Red style */
-            --accent-gold: #d4af37; /* Elegant subtle gold */
-            --glass-bg: rgba(20, 20, 22, 0.5);
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --bg-color: #0f0505; /* Very dark rich brown/red */
+            --primary: #c9a227; /* Old Gold */
+            --secondary: #8c1c13; /* Deep Crimson */
+            --text-light: #f4ecd8; /* Cream white */
+            --text-dark: #1a1a1a;
         }
 
         * {
@@ -23,309 +23,326 @@
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Ambient Subdued Background */
-        .ambient-bg {
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        /* Abstract Liquid Background (Pure CSS) */
+        .bg-art {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: radial-gradient(circle at 80% 20%, rgba(50, 10, 10, 0.4) 0%, transparent 40%),
-                        radial-gradient(circle at 20% 80%, rgba(30, 25, 10, 0.3) 0%, transparent 40%);
-            z-index: -2;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(140, 28, 19, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(201, 162, 39, 0.15) 0%, transparent 40%);
+            filter: blur(40px);
+            animation: breathe 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Grid lines for texture */
+        .texture {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
             pointer-events: none;
         }
 
-        /* Top Progress Bar */
-        #progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: rgba(255,255,255,0.05);
-            z-index: 9999;
-            backdrop-filter: blur(5px);
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
         }
 
-        #progress-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #8a0303, var(--accent-red), var(--accent-gold));
-        }
-
-        /* Typography */
-        .mega-title {
-            font-size: 11vw;
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            line-height: 1;
-            background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .hero-content {
             text-align: center;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 10vw;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+            line-height: 1;
+            text-shadow: 0 10px 30px rgba(201, 162, 39, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-family: monospace;
+            font-size: 1.2rem;
+            letter-spacing: 0.5em;
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+
+        /* Magazine Layout Sections */
+        .section {
+            padding: 8rem 2rem;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .container.reverse {
+            grid-template-columns: 1fr 1fr;
+            direction: rtl;
+        }
+        
+        .container.reverse > * {
+            direction: ltr;
+        }
+
+        .text-block {
+            padding: 3rem;
+            background: rgba(20, 10, 10, 0.6);
+            border-left: 4px solid var(--primary);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+        }
+
+        .container.reverse .text-block {
+            border-left: none;
+            border-right: 4px solid var(--primary);
+        }
+
+        .text-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chapter-num {
+            font-size: 8rem;
+            color: rgba(201, 162, 39, 0.1);
+            position: absolute;
+            top: -40px;
+            left: -20px;
+            line-height: 1;
+            z-index: -1;
+            font-style: italic;
+        }
+
+        .container.reverse .chapter-num {
+            left: auto;
+            right: -20px;
         }
 
         h2 {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            letter-spacing: -0.03em;
-            line-height: 1.15;
-            color: #ffffff;
+            font-size: 3.5rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
         }
 
         h3 {
-            font-size: 1.1rem;
-            color: var(--accent-red);
-            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--primary);
             margin-bottom: 1rem;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
         }
 
         p {
-            font-size: 1.6rem;
-            line-height: 1.6;
-            color: #a1a1a6;
-            font-weight: 400;
-            max-width: 800px;
-        }
-
-        .highlight {
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        .highlight-red {
-            color: var(--accent-red);
-            font-weight: 500;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #dcd0ba;
         }
 
         .highlight-gold {
-            color: var(--accent-gold);
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .highlight-red {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+        /* Large decorative text block */
+        .deco-text {
+            font-size: 5rem;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1.2s ease-out;
+        }
+
+        .deco-text.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Special Full Width Section */
+        .full-section {
+            background: var(--primary);
+            color: var(--text-dark);
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .full-section .text-block {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .full-section h2 {
+            color: var(--text-dark);
+        }
+
+        .full-section h3 {
+            color: var(--secondary);
+        }
+
+        .full-section p {
+            color: #333;
             font-weight: 500;
         }
-
-        /* Layout */
-        .section {
-            position: relative;
-            min-height: 150vh;
+        
+        .full-section .highlight-gold {
+            color: var(--secondary);
         }
 
-        .sticky-container {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        /* Huge Background Text Anchor */
-        .bg-anchor {
-            position: absolute;
-            font-size: 30vw;
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
-            line-height: 1;
-            z-index: 0;
-            transform: scale(1.1);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s;
-            letter-spacing: -0.05em;
-            text-align: center;
-            width: 100%;
-        }
-
-        /* Glassmorphism Content Card */
-        .content-card {
-            position: relative;
-            z-index: 10;
-            background: var(--glass-bg);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 5rem 4rem;
-            max-width: 900px;
-            width: 90%;
-            
-            /* Animation states */
-            opacity: 0;
-            transform: translateY(60px) scale(0.98);
-            filter: blur(8px);
-            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .content-card.in-view {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
-        }
-
-        /* Intro Hero */
-        #hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .hero-subtitle {
-            font-size: 2rem;
-            color: var(--text-muted);
-            letter-spacing: 0.4em;
-            margin-top: 2rem;
-            text-align: center;
-            animation: fadeIn 3s ease-in-out;
-            font-weight: 300;
-        }
-
-        .hero-tag {
-            margin-top: 3rem;
-            padding: 8px 24px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 40px;
-            font-size: 0.9rem;
-            letter-spacing: 0.2em;
-            color: #fff;
-            animation: fadeIn 4s ease-in-out;
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(10px);
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        footer {
-            height: 40vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #000;
-            z-index: 20;
-            position: relative;
-            border-top: 1px solid rgba(255,255,255,0.05);
+        @media (max-width: 900px) {
+            .container, .container.reverse {
+                grid-template-columns: 1fr;
+            }
+            .deco-text {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-bg"></div>
-
-    <div id="progress-container">
-        <div id="progress-bar"></div>
-    </div>
+    <div class="bg-art"></div>
+    <div class="texture"></div>
 
     <section id="hero">
-        <h1 class="mega-title" style="animation: fadeIn 1.5s ease-out;">邹宇航</h1>
-        <div class="hero-subtitle">CAPITAL & DESIRE</div>
-        <div class="hero-tag">SICHUAN · MEISHAN</div>
+        <div class="hero-content">
+            <h1 style="animation: slideUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);">邹宇航</h1>
+            <div class="hero-subtitle" style="animation: slideUp 2s cubic-bezier(0.2, 0.8, 0.2, 1);">Master of Capital & Automata</div>
+        </div>
     </section>
 
-    <!-- Phase 1 -->
     <section class="section">
-        <div class="sticky-container">
-            <div class="bg-anchor">ICBC</div>
-            <div class="content-card observer-item">
-                <h3>Phase 1 / 潜伏</h3>
-                <h2>工商银行的上帝之手</h2>
-                <p>世人以为他只是四川眉山工商银行里一个平平无奇的记账员。殊不知，他手中那把包浆的算盘，连接着全球金融的命脉。每次他用红笔勾销一笔账目，<span class="highlight">华尔街的道琼斯指数就会不可控地颤抖一次</span>。他不是在记账，他是在宏观调控整个地球的 GDP。据说，2008 年的次贷危机，仅仅是因为他在吃麻辣火锅时，一滴红油不小心滴在了账本的“卖出”键上。</p>
+        <div class="container">
+            <div class="text-block scroll-anim">
+                <div class="chapter-num serif">01</div>
+                <h3>[ 潜伏 · 资本的原罪 ]</h3>
+                <h2>工商银行的<br>上帝之手</h2>
+                <p>世人以为他只是四川眉山工商银行里一个平平无奇的记账员。殊不知，他手中那把包浆的算盘，连接着全球金融的命脉。每次他用红笔勾销一笔账目，<span class="highlight-red">华尔街的道琼斯指数就会不可控地颤抖一次</span>。他不是在记账，他是在宏观调控整个地球的 GDP。据说，2008 年的次贷危机，仅仅是因为他在吃麻辣火锅时，一滴红油不小心滴在了账本的“卖出”键上。</p>
+            </div>
+            <div class="deco-text serif scroll-anim">
+                "Control the ledger,<br>control the world."
             </div>
         </div>
     </section>
 
-    <!-- Phase 2 -->
+    <!-- Special Gold Section for RPA -->
+    <section class="full-section">
+        <div class="text-block scroll-anim" style="transform: translateY(30px);">
+            <h3>[ 降维 · 自动化的神明 ]</h3>
+            <h2 class="serif">影刀之神的觉醒</h2>
+            <p style="font-size: 1.5rem;">玩腻了全球资本市场后，邹宇航觉得人类的操作太慢了。他跳槽转战 RPA 领域，入职影刀。上岗第一天，他花了半小时写了一个名为“天网”的底层自动化脚本。<span class="highlight-gold">这个脚本不仅瞬间完成了全公司未来十年的 KPI，还自动顺着网线把竞争对手的服务器格式化了。</span>老板看到后吓得当场要交出董事长大印，被他以“当老板影响我下班去吃串串”为由拒绝。</p>
+        </div>
+    </section>
+
     <section class="section">
-        <div class="sticky-container">
-            <div class="bg-anchor" style="color: rgba(212, 175, 55, 0.02); -webkit-text-stroke: 1px rgba(212, 175, 55, 0.1);">RPA</div>
-            <div class="content-card observer-item">
-                <h3 style="color: var(--accent-gold);">Phase 2 / 降维打击</h3>
-                <h2>影刀之神觉醒</h2>
-                <p>玩腻了全球资本市场后，邹宇航觉得人类的操作太慢了。他跳槽转战 RPA 领域，入职影刀。上岗第一天，他花了半小时写了一个名为“天网”的底层自动化脚本。<span class="highlight">这个脚本不仅瞬间完成了全公司未来十年的 KPI，还自动顺着网线把竞争对手的服务器格式化了</span>。老板看到后吓得当场要交出董事长大印，被他以“当老板影响我下班去吃串串”为由拒绝。</p>
+        <div class="container reverse">
+            <div class="text-block scroll-anim">
+                <div class="chapter-num serif">03</div>
+                <h3>[ 多线程 · 欲望的矩阵 ]</h3>
+                <h2>量子级<br>时间管理大师</h2>
+                <p>不要用普通渣男的眼光看他，那是对他技术的侮辱。作为一个拥有顶级架构思维的男人，他把“玩女人”变成了一个超大规模分布式并发系统。他用影刀 RPA 编写了恋爱机器人矩阵：<span class="highlight-gold">自动秒回微信、自动按情绪波动算法购买奶茶、自动生成土味情话</span>。巅峰时期，他同时维持了 108 个并行恋爱线程，且没有发生任何内存泄漏或进程死锁。在夜店，他不用睁眼，心率传感器就能自动帮他锁定全场最高质量的目标。</p>
+            </div>
+            <div class="deco-text serif scroll-anim">
+                "Love is just a<br>multithreaded process."
             </div>
         </div>
     </section>
 
-    <!-- Phase 3 -->
-    <section class="section">
-        <div class="sticky-container">
-            <div class="bg-anchor">THREAD</div>
-            <div class="content-card observer-item">
-                <h3 style="color: #a1a1a6;">Phase 3 / 多线程并发</h3>
-                <h2>量子级时间管理大师</h2>
-                <p>不要用普通渣男的眼光看他，那是对他技术的侮辱。作为一个拥有顶级架构思维的男人，他把“玩女人”变成了一个超大规模分布式并发系统。他用影刀 RPA 编写了恋爱机器人矩阵：<span class="highlight">自动秒回微信、自动按情绪波动算法购买奶茶、自动生成土味情话</span>。巅峰时期，他同时维持了 108 个并行恋爱线程，且没有发生任何内存泄漏或进程死锁。在夜店，他不用睁眼，心率传感器就能自动帮他锁定全场最高质量的目标。</p>
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container" style="grid-template-columns: 1fr; text-align: center; max-width: 800px;">
+            <div class="text-block scroll-anim" style="border: none; background: transparent; padding: 0;">
+                <div class="chapter-num serif" style="position: relative; top: 0; left: 0; font-size: 12rem; margin-bottom: -60px; text-align: center;">∞</div>
+                <h3 style="color: var(--secondary);">[ 归隐 · 眉山的王座 ]</h3>
+                <h2 style="font-size: 4rem;">沸腾牛油与钢铁意志</h2>
+                <p style="font-size: 1.5rem;">如今的邹宇航，大隐隐于市。医学检测表明，他的血管里流淌的早已不是血液，而是<span class="highlight-red">四川眉山特级沸腾牛油火锅底料</span>。他每天坐在火锅店里，看着满天星辰。他的 RPA 机器人正在云端自动帮他打理着全球的资产和几百个心碎女孩的晚安问候。有人问他成功的秘诀，他夹起一片毛肚，在滚烫的红油中七上八下，淡淡地说：</p>
+                <p style="margin-top: 2rem; font-size: 2rem; color: var(--primary); font-family: 'Playfair Display', serif; font-style: italic;">“人生就像写脚本，只要异常抓得准，海王也能做得很安稳。”</p>
             </div>
         </div>
     </section>
-
-    <!-- Final -->
-    <section class="section">
-        <div class="sticky-container">
-            <div class="bg-anchor" style="font-size: 20vw;">MEISHAN</div>
-            <div class="content-card observer-item">
-                <h3 style="color: var(--accent-red);">Phase 4 / 归隐</h3>
-                <h2>沸腾牛油与钢铁意志</h2>
-                <p>如今的邹宇航，大隐隐于市。医学检测表明，他的血管里流淌的早已不是血液，而是<span class="highlight-red">四川眉山特级沸腾牛油火锅底料</span>。他每天坐在火锅店里，看着满天星辰。他的 RPA 机器人正在云端自动帮他打理着全球的资产和几百个心碎女孩的晚安问候。有人问他成功的秘诀，他夹起一片毛肚，在滚烫的红油中七上八下，淡淡地说：“<span class="highlight-gold">人生就像写脚本，只要异常抓得准，海王也能做得很安稳。</span>”</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <h2 style="font-size: 2rem; color: #888; font-weight: 500;">"System.exit(0);"</h2>
-        <p style="font-size: 0.9rem; color: #444; margin-top: 1rem; letter-spacing: 0.1em;">© ZOU YUHANG. ARCHITECT OF DESIRE.</p>
-    </footer>
 
     <script>
-        // Progress Bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        });
+        // Simple slide up animation for loading
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes slideUp {
+                0% { opacity: 0; transform: translateY(40px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
 
-        // Intersection Observer for Cards
+        // Intersection Observer for scroll animations
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.4
+            threshold: 0.2
         };
 
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    const bgAnchor = entry.target.previousElementSibling;
-                    if(bgAnchor && bgAnchor.classList.contains('bg-anchor')) {
-                        bgAnchor.style.transform = 'scale(1)';
-                    }
-                } else {
-                    entry.target.classList.remove('in-view');
-                    const bgAnchor = entry.target.previousElementSibling;
-                    if(bgAnchor && bgAnchor.classList.contains('bg-anchor')) {
-                        bgAnchor.style.transform = 'scale(1.1)';
-                    }
+                    entry.target.classList.add('visible');
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.observer-item').forEach(card => {
-            observer.observe(card);
+        document.querySelectorAll('.scroll-anim').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
