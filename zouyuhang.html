@@ -1,586 +1,266 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zou Yuhang · Architect of Desire</title>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Serif+SC:wght@200;300;400&family=Raleway:wght@200;300;400&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邹宇航 - 赛博海王与资本暗主</title>
+    <style>
+        :root {
+            --bg-color: #050005; /* Extremely dark reddish-purple */
+            --neon-red: #ff2a2a;
+            --neon-pink: #ff00ff;
+            --gold: #ffd700;
+            --text-main: #f0f0f0;
+            --glass-bg: rgba(30, 0, 15, 0.6);
+        }
 
-  :root {
-    --black: #080505;
-    --white: #f5ecee;
-    --accent: oklch(60% 0.22 25); /* Fiery/Neon Red-Orange for Hotpot/Cyberpunk vibe */
-    --dim: oklch(50% 0.05 10);
-    --serif: 'EB Garamond', Georgia, serif;
-    --sans: 'Raleway', Helvetica Neue, sans-serif;
-  }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 0, 0, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.05), transparent 25%);
+        }
 
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: var(--serif);
-    overflow-x: hidden;
-    cursor: none;
-  }
+        /* Hotpot Chili Particles (pure CSS) */
+        .spicy-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background-image: radial-gradient(#ff2a2a 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            animation: floatingChili 20s linear infinite;
+        }
 
-  /* Custom cursor */
-  .cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: var(--white);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s ease, width 0.3s, height 0.3s, background 0.3s;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1px solid rgba(245,236,238,0.3);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), width 0.3s, height 0.3s;
-  }
+        @keyframes floatingChili {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 1000px; }
+        }
 
-  /* ── HERO ── */
-  #hero {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
+        /* Glitch Effect for Title */
+        .glitch {
+            font-size: 10vw;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 var(--neon-red), -0.025em -0.05em 0 var(--neon-pink),
+                         0.025em 0.05em 0 var(--gold);
+            animation: glitch 1s infinite;
+            background: linear-gradient(to right, var(--neon-red), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.05em;
+        }
 
-  .spotlight {
-    position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(255, 50, 50, 0.05) 0%, transparent 70%);
-    border-radius: 50%;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    animation: pulse 6s ease-in-out infinite;
-  }
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--neon-red), -0.025em -0.05em 0 var(--neon-pink), 0.025em 0.05em 0 var(--gold); }
+            14% { text-shadow: 0.05em 0 0 var(--neon-red), -0.025em -0.05em 0 var(--neon-pink), 0.025em 0.05em 0 var(--gold); }
+            15% { text-shadow: -0.05em -0.025em 0 var(--neon-red), 0.025em 0.025em 0 var(--neon-pink), -0.05em -0.05em 0 var(--gold); }
+            49% { text-shadow: -0.05em -0.025em 0 var(--neon-red), 0.025em 0.025em 0 var(--neon-pink), -0.05em -0.05em 0 var(--gold); }
+            50% { text-shadow: 0.025em 0.05em 0 var(--neon-red), 0.05em 0 0 var(--neon-pink), 0 -0.05em 0 var(--gold); }
+            99% { text-shadow: 0.025em 0.05em 0 var(--neon-red), 0.05em 0 0 var(--neon-pink), 0 -0.05em 0 var(--gold); }
+            100% { text-shadow: -0.025em 0 0 var(--neon-red), -0.025em -0.025em 0 var(--neon-pink), -0.025em -0.05em 0 var(--gold); }
+        }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%,-50%) scale(1.15); }
-  }
+        .section {
+            min-height: 120vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
 
-  .hero-name {
-    font-family: 'Noto Serif SC', 'Songti SC', serif;
-    font-size: clamp(40px, 5vw, 72px);
-    font-weight: 300;
-    letter-spacing: 0.8em;
-    margin-right: -0.8em; /* 修正居中由于字间距造成的偏移 */
-    color: var(--white);
-    opacity: 0;
-    animation: fadeUp 1.2s 0.1s cubic-bezier(0.23,1,0.32,1) forwards;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 0 20px rgba(255,255,255,0.1);
-  }
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 42, 42, 0.2);
+            border-radius: 20px;
+            padding: 4rem;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.1), inset 0 0 20px rgba(255, 215, 0, 0.05);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
 
-  .hero-eyebrow {
-    font-family: var(--sans);
-    font-weight: 200;
-    font-size: clamp(11px, 1.2vw, 14px);
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0;
-    animation: fadeUp 1s 0.3s ease forwards;
-    margin-bottom: 2rem;
-  }
+        /* Card Neon Glow Border Effect */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+            animation: scanline 4s linear infinite;
+        }
 
-  .hero-title {
-    font-family: var(--serif);
-    font-size: clamp(56px, 8vw, 120px);
-    font-weight: 400;
-    font-style: italic;
-    line-height: 1.05;
-    text-align: center;
-    letter-spacing: -0.02em;
-    opacity: 0;
-    animation: fadeUp 1.2s 0.6s ease forwards;
-    text-wrap: balance;
-    max-width: 1000px;
-  }
+        @keyframes scanline {
+            100% { left: 200%; }
+        }
 
-  .hero-sub {
-    font-family: var(--sans);
-    font-weight: 200;
-    font-size: clamp(13px, 1.5vw, 18px);
-    letter-spacing: 0.15em;
-    color: var(--dim);
-    margin-top: 2.5rem;
-    opacity: 0;
-    animation: fadeUp 1s 1.1s ease forwards;
-  }
+        .card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
 
-  .scroll-hint {
-    position: absolute;
-    bottom: 2.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    opacity: 0;
-    animation: fadeUp 1s 2s ease forwards;
-  }
-  .scroll-hint span {
-    font-family: var(--sans);
-    font-weight: 200;
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--dim);
-  }
-  .scroll-line {
-    width: 1px;
-    height: 50px;
-    background: linear-gradient(to bottom, var(--dim), transparent);
-    animation: scrollDrop 2s 2.5s ease-in-out infinite;
-  }
-  @keyframes scrollDrop {
-    0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
-    50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
-    100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
-  }
+        h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-red);
+        }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+        h3 {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 5px;
+        }
 
-  /* ── DIVIDER ── */
-  .rule {
-    width: 1px;
-    height: 80px;
-    background: linear-gradient(to bottom, transparent, var(--dim), transparent);
-    margin: 0 auto;
-  }
+        p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
 
-  /* ── SECTIONS ── */
-  section {
-    padding: clamp(80px, 12vh, 140px) clamp(24px, 8vw, 120px);
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+        .highlight-red {
+            color: var(--neon-red);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255,42,42,0.5);
+        }
 
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+        .highlight-gold {
+            color: var(--gold);
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255,215,0,0.5);
+        }
 
-  /* ── QUOTE SECTION ── */
-  .quote-section {
-    text-align: center;
-    padding: clamp(100px, 15vh, 180px) clamp(24px, 10vw, 200px);
-  }
-  .quote-mark {
-    font-family: var(--serif);
-    font-size: 120px;
-    line-height: 0.4;
-    color: var(--accent);
-    opacity: 0.3;
-    display: block;
-    margin-bottom: 1rem;
-  }
-  .quote-text {
-    font-family: var(--serif);
-    font-size: clamp(26px, 4vw, 48px);
-    font-weight: 400;
-    font-style: italic;
-    line-height: 1.4;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  .quote-author {
-    margin-top: 2.5rem;
-    font-family: var(--sans);
-    font-weight: 200;
-    font-size: 13px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
+        .highlight-pink {
+            color: var(--neon-pink);
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255,0,255,0.5);
+        }
 
-  /* ── PILLARS ── */
-  .pillars {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(30px, 5vw, 80px);
-    padding: clamp(60px, 10vh, 120px) clamp(24px, 8vw, 120px);
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .pillar { text-align: center; }
-  .pillar-num {
-    font-family: var(--serif);
-    font-size: clamp(48px, 6vw, 80px);
-    font-style: italic;
-    color: var(--accent);
-    opacity: 0.4;
-    line-height: 1;
-    display: block;
-    margin-bottom: 1.2rem;
-  }
-  .pillar-title {
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: clamp(14px, 1.8vw, 20px);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-  .pillar-body {
-    font-family: var(--serif);
-    font-size: clamp(15px, 1.6vw, 18px);
-    line-height: 1.7;
-    color: var(--dim);
-  }
+        .bg-text {
+            position: absolute;
+            font-size: 15rem;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 42, 42, 0.05);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            white-space: nowrap;
+        }
 
-  /* ── ONE MORE THING ── */
-  #one-more-thing {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .omt-glow {
-    position: absolute;
-    width: 800px; height: 800px;
-    background: radial-gradient(circle, rgba(200,50,50,0.06) 0%, transparent 65%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-  .omt-label {
-    font-family: var(--sans);
-    font-weight: 200;
-    font-size: clamp(11px, 1.2vw, 13px);
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 2rem;
-  }
-  .omt-title {
-    font-family: var(--serif);
-    font-size: clamp(48px, 7vw, 100px);
-    font-style: italic;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    max-width: 900px;
-    text-wrap: balance;
-  }
-  .omt-body {
-    font-family: var(--sans);
-    font-weight: 200;
-    font-size: clamp(14px, 1.6vw, 18px);
-    color: var(--dim);
-    max-width: 560px;
-    line-height: 1.8;
-    margin-top: 2rem;
-    letter-spacing: 0.04em;
-  }
-  .omt-cta {
-    margin-top: 3.5rem;
-    display: inline-block;
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 13px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(245,242,238,0.3);
-    padding-bottom: 6px;
-    transition: border-color 0.3s, color 0.3s;
-  }
-  .omt-cta:hover { border-color: var(--accent); color: var(--accent); }
+        #hero {
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(30,0,0,1) 0%, #000 100%);
+        }
 
-  /* ── FULL-BLEED QUOTE ── */
-  .fullbleed {
-    background: var(--white);
-    color: var(--black);
-    padding: clamp(80px, 12vh, 160px) clamp(24px, 10vw, 200px);
-    text-align: center;
-  }
-  .fullbleed .quote-text { color: var(--black); }
-  .fullbleed .quote-mark { color: var(--accent); opacity: 0.8; }
-  .fullbleed .quote-author { color: #555; }
+        .subtitle {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-top: 1rem;
+            letter-spacing: 0.2em;
+        }
+        
+        .origin-tag {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 5px 15px;
+            border: 1px solid var(--neon-red);
+            color: var(--neon-red);
+            border-radius: 20px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            animation: pulseBg 2s infinite;
+        }
 
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 3rem clamp(24px, 8vw, 120px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  footer .brand {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 20px;
-    letter-spacing: -0.01em;
-  }
-  footer .copy {
-    font-family: var(--sans);
-    font-weight: 200;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--dim);
-    text-transform: uppercase;
-  }
+        @keyframes pulseBg {
+            0%, 100% { box-shadow: 0 0 5px var(--neon-red); }
+            50% { box-shadow: 0 0 20px var(--neon-red); }
+        }
 
-  /* ── HORIZONTAL RULE ── */
-  .thin-line {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  /* ── MANIFESTO LIST ── */
-  .manifesto {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: clamp(60px, 10vh, 120px) clamp(24px, 8vw, 120px);
-  }
-  .manifesto-item {
-    display: flex;
-    align-items: baseline;
-    gap: 2rem;
-    padding: 1.8rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .manifesto-item:last-child { border-bottom: none; }
-  .m-num {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 13px;
-    color: var(--accent);
-    opacity: 0.7;
-    min-width: 24px;
-  }
-  .m-text {
-    font-family: var(--serif);
-    font-size: clamp(18px, 2.2vw, 26px);
-    line-height: 1.4;
-    font-weight: 400;
-  }
-</style>
+    </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+    <div class="spicy-particles"></div>
 
-<!-- ── HERO ── -->
-<div id="hero">
-  <div class="spotlight"></div>
-  <h2 class="hero-name">邹宇航</h2>
-  <p class="hero-eyebrow">Architect of Desire · 2018 – ∞</p>
-  <h1 class="hero-title">The ones who control<br>the ledger</h1>
-  <p class="hero-sub">are the ones who control the world</p>
-  <div class="scroll-hint">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</div>
+    <section id="hero" class="section">
+        <h1 class="glitch" data-text="邹宇航">邹宇航</h1>
+        <div class="subtitle">资本暗主 × 赛博海王</div>
+        <div class="origin-tag">SICHUAN · MEISHAN · HOTPOT BLOOD</div>
+    </section>
 
-<!-- ── PILLARS ── -->
-<div class="pillars">
-  <div class="pillar reveal">
-    <span class="pillar-num">I</span>
-    <p class="pillar-title">潜伏</p>
-    <p class="pillar-body">世人以为他只是工行的记账员。殊不知他手中包浆的算盘，连接着全球金融的命脉。每次红笔勾销，华尔街都会颤抖。</p>
-  </div>
-  <div class="pillar reveal" style="transition-delay:0.15s">
-    <span class="pillar-num">II</span>
-    <p class="pillar-title">降维</p>
-    <p class="pillar-body">玩腻了资本游戏，他用半小时写出了影刀底层架构。瞬间完成公司十年KPI，并顺着网线将对手服务器格式化。</p>
-  </div>
-  <div class="pillar reveal" style="transition-delay:0.3s">
-    <span class="pillar-num">III</span>
-    <p class="pillar-title">并发</p>
-    <p class="pillar-body">把情感变成大规模分布式并发系统。维持108个恋爱线程，自动送花、自动维系，无一次内存泄漏或进程死锁。</p>
-  </div>
-</div>
+    <section class="section">
+        <div class="bg-text">ICBC</div>
+        <div class="card">
+            <h3>[ 阶段一：潜伏 ]</h3>
+            <h2>工商银行的上帝之手</h2>
+            <p>世人以为他只是四川眉山工商银行里一个平平无奇的记账员。殊不知，他手中那把包浆的算盘，连接着全球金融的命脉。每次他用红笔勾销一笔账目，<span class="highlight-red">华尔街的道琼斯指数就会不可控地颤抖一次</span>。他不是在记账，他是在宏观调控整个地球的 GDP。据说，2008 年的次贷危机，仅仅是因为他在吃麻辣火锅时，一滴红油不小心滴在了账本的“卖出”键上。</p>
+        </div>
+    </section>
 
-<hr class="thin-line">
+    <section class="section">
+        <div class="bg-text">RPA</div>
+        <div class="card" style="border-color: rgba(255, 215, 0, 0.3);">
+            <h3 style="color: var(--text-main);">[ 阶段二：降维打击 ]</h3>
+            <h2 style="color: var(--gold); text-shadow: 0 0 10px var(--gold);">影刀之神觉醒</h2>
+            <p>玩腻了全球资本市场后，邹宇航觉得人类的操作太慢了。他跳槽转战 RPA 领域，入职影刀。上岗第一天，他花了半小时写了一个名为“天网”的底层自动化脚本。<span class="highlight-gold">这个脚本不仅瞬间完成了全公司未来十年的 KPI，还自动顺着网线把竞争对手的服务器格式化了</span>。老板看到后吓得当场要交出董事长大印，被他以“当老板影响我下班去吃串串”为由拒绝。</p>
+        </div>
+    </section>
 
-<!-- ── QUOTE 1 ── -->
-<div class="quote-section reveal">
-  <span class="quote-mark">"</span>
-  <p class="quote-text">人生就像写脚本，只要异常抓得准，海王也能做得很安稳。</p>
-  <p class="quote-author">— Zou Yuhang · Meishan, 2024</p>
-</div>
+    <section class="section">
+        <div class="bg-text">PLAYBOY</div>
+        <div class="card" style="border-color: rgba(255, 0, 255, 0.3); background: rgba(30, 0, 30, 0.6);">
+            <h3 style="color: var(--neon-pink);">[ 阶段三：多线程海王 ]</h3>
+            <h2 style="color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink);">量子级时间管理大师</h2>
+            <p>不要用普通渣男的眼光看他，那是对他技术的侮辱。作为一个拥有顶级架构思维的男人，他把“玩女人”变成了一个超大规模分布式并发系统。他用影刀 RPA 编写了恋爱机器人矩阵：<span class="highlight-pink">自动秒回微信、自动按情绪波动算法购买奶茶、自动生成土味情话</span>。巅峰时期，他同时维持了 108 个并行恋爱线程（女友），且没有发生任何内存泄漏或进程死锁（翻车）。在夜店，他不用睁眼，心率传感器就能自动帮他锁定全场最靓的卡座。</p>
+        </div>
+    </section>
 
-<hr class="thin-line">
+    <section class="section">
+        <div class="bg-text">MEISHAN</div>
+        <div class="card">
+            <h3>[ 终章：归隐 ]</h3>
+            <h2>沸腾的牛油与钢铁意志</h2>
+            <p>如今的邹宇航，大隐隐于市。医学检测表明，他的血管里流淌的早已不是血液，而是<span class="highlight-red">四川眉山特级沸腾牛油火锅底料</span>。他每天坐在火锅店里，看着满天星辰。他的 RPA 机器人正在云端自动帮他打理着全球的资产和几百个心碎女孩的晚安问候。有人问他成功的秘诀是什么，他夹起一片毛肚，在滚烫的红油中七上八下，淡淡地说：“<span class="highlight-gold">人生就像写脚本，只要异常抓得准，海王也能做得很安稳。</span>”</p>
+        </div>
+    </section>
 
-<!-- ── MANIFESTO ── -->
-<div class="manifesto">
-  <div class="manifesto-item reveal">
-    <span class="m-num">i</span>
-    <p class="m-text">真正的垄断，是不留痕迹的自动化代码</p>
-  </div>
-  <div class="manifesto-item reveal" style="transition-delay:0.1s">
-    <span class="m-num">ii</span>
-    <p class="m-text">爱情从来不是感觉，而是高度并发的 API 请求</p>
-  </div>
-  <div class="manifesto-item reveal" style="transition-delay:0.2s">
-    <span class="m-num">iii</span>
-    <p class="m-text">只要算力足够，连人心都能被穷举</p>
-  </div>
-  <div class="manifesto-item reveal" style="transition-delay:0.3s">
-    <span class="m-num">iv</span>
-    <p class="m-text">摒弃肉体凡胎的迟钝，拥抱 RPA 赐予的永生</p>
-  </div>
-</div>
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
 
-<!-- ── FULL BLEED LIGHT ── -->
-<div class="fullbleed reveal">
-  <span class="quote-mark">"</span>
-  <p class="quote-text">血管里流淌的早已不是血液。<br>是沸腾的牛油。</p>
-  <p class="quote-author">— The Origin of ShadowBot</p>
-</div>
-
-<!-- ── ONE MORE THING ── -->
-<div id="one-more-thing">
-  <div class="omt-glow"></div>
-  <p class="omt-label reveal">One more thing…</p>
-  <h2 class="omt-title reveal" style="transition-delay:0.2s">我们写的不是脚本，<br>我们写的是宿命</h2>
-  <p class="omt-body reveal" style="transition-delay:0.35s">如今的他在眉山吃着火锅，看着满天星辰。<br>他的 RPA 机器人正在云端，自动打理着全球的资产与几百个心碎女孩的晚安。</p>
-  <a href="#hero" class="omt-cta reveal" style="transition-delay:0.5s">回到开始</a>
-</div>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <span class="brand">Shadow Lord</span>
-  <span class="copy">Inspired by Capital & Automata · 2018 – ∞</span>
-</footer>
-
-<script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  (function animCursor() {
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animCursor);
-  })();
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  reveals.forEach(el => io.observe(el));
-
-  // Subtle spotlight follow on hero
-  const hero = document.getElementById('hero');
-  const spot = hero.querySelector('.spotlight');
-  hero.addEventListener('mousemove', e => {
-    const r = hero.getBoundingClientRect();
-    const x = e.clientX - r.left, y = e.clientY - r.top;
-    spot.style.left = x + 'px';
-    spot.style.top = y + 'px';
-    spot.style.transform = 'translate(-50%, -50%)';
-  });
-
-  // Tweaks system (Adapted for Zou Yuhang colors)
-  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-    "accentColor": "oklch(60% 0.22 25)",
-    "heroFont": "italic",
-    "bgColor": "#080505"
-  }/*EDITMODE-END*/;
-
-  let tweaks = {...TWEAK_DEFAULTS};
-  function applyTweaks(t) {
-    document.documentElement.style.setProperty('--accent', t.accentColor);
-    document.documentElement.style.setProperty('--black', t.bgColor);
-    document.querySelector('.hero-title').style.fontStyle = t.heroFont;
-  }
-  applyTweaks(tweaks);
-
-  let tweakPanel = null;
-  function buildPanel() {
-    if (tweakPanel) return;
-    tweakPanel = document.createElement('div');
-    tweakPanel.style.cssText = `position:fixed;bottom:24px;right:24px;background:rgba(10,10,10,0.95);
-      border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(20px);padding:24px;
-      border-radius:4px;z-index:9990;width:260px;font-family:'Raleway',sans-serif;
-      box-shadow:0 8px 40px rgba(0,0,0,0.6);display:none;`;
-    tweakPanel.innerHTML = `
-      <p style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#888;margin-bottom:18px;">Tweaks</p>
-      <label style="display:block;margin-bottom:14px;font-size:13px;color:#ccc;font-weight:200;">
-        强调色
-        <input type="color" id="tw-accent" value="#d33a20"
-          style="float:right;border:none;background:none;cursor:pointer;width:32px;height:20px;">
-      </label>
-      <label style="display:block;margin-bottom:14px;font-size:13px;color:#ccc;font-weight:200;">
-        背景色
-        <input type="color" id="tw-bg" value="#080505"
-          style="float:right;border:none;background:none;cursor:pointer;width:32px;height:20px;">
-      </label>
-      <label style="display:block;font-size:13px;color:#ccc;font-weight:200;">
-        主标题风格
-        <select id="tw-style" style="float:right;background:#222;border:1px solid #444;color:#fff;font-size:12px;padding:2px 6px;border-radius:2px;">
-          <option value="italic">斜体</option>
-          <option value="normal">正体</option>
-        </select>
-      </label>`;
-    document.body.appendChild(tweakPanel);
-    tweakPanel.querySelector('#tw-accent').addEventListener('input', e => {
-      tweaks.accentColor = e.target.value;
-      applyTweaks(tweaks);
-      window.parent.postMessage({type:'__edit_mode_set_keys', edits: tweaks}, '*');
-    });
-    tweakPanel.querySelector('#tw-bg').addEventListener('input', e => {
-      tweaks.bgColor = e.target.value;
-      applyTweaks(tweaks);
-      window.parent.postMessage({type:'__edit_mode_set_keys', edits: tweaks}, '*');
-    });
-    tweakPanel.querySelector('#tw-style').addEventListener('change', e => {
-      tweaks.heroFont = e.target.value;
-      applyTweaks(tweaks);
-      window.parent.postMessage({type:'__edit_mode_set_keys', edits: tweaks}, '*');
-    });
-  }
-
-  window.addEventListener('message', e => {
-    if (e.data?.type === '__activate_edit_mode') { buildPanel(); tweakPanel.style.display = 'block'; }
-    if (e.data?.type === '__deactivate_edit_mode' && tweakPanel) tweakPanel.style.display = 'none';
-  });
-  window.parent.postMessage({type:'__edit_mode_available'}, '*');
-</script>
+        cards.forEach(card => observer.observe(card));
+    </script>
 </body>
 </html>
