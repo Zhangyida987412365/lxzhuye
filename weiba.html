@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尾巴 - 声之降临者</title>
+    <style>
+        :root {
+            --bg-color: #030008;
+            --violet: #a855f7;
+            --violet-deep: #7c3aed;
+            --rose: #f43f5e;
+            --gold: #fbbf24;
+            --cyan: #22d3ee;
+            --text-main: #f5f5f7;
+            --glass-bg: rgba(20, 5, 40, 0.55);
+            --glass-border: rgba(168, 85, 247, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ====== Aurora Background ====== */
+        .aurora {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .aurora::before,
+        .aurora::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -60%;
+            left: -50%;
+            border-radius: 50%;
+            animation: auroraMove 16s ease-in-out infinite alternate;
+        }
+
+        .aurora::before {
+            background: radial-gradient(ellipse at 30% 60%, rgba(168, 85, 247, 0.18) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 40%, rgba(244, 63, 94, 0.12) 0%, transparent 50%);
+        }
+
+        .aurora::after {
+            background: radial-gradient(ellipse at 60% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
+            animation-delay: -8s;
+            animation-direction: alternate-reverse;
+        }
+
+        @keyframes auroraMove {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(5%, -3%) rotate(3deg) scale(1.05); }
+            66% { transform: translate(-3%, 5%) rotate(-2deg) scale(0.98); }
+            100% { transform: translate(2%, 2%) rotate(1deg) scale(1.02); }
+        }
+
+        /* ====== Floating Music Notes ====== */
+        .music-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .note {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0;
+            animation: floatNote linear infinite;
+            color: var(--violet);
+            text-shadow: 0 0 10px var(--violet);
+            filter: blur(1px);
+        }
+
+        @keyframes floatNote {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ====== Soundwave behind hero title ====== */
+        .soundwave-container {
+            position: absolute;
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: linear-gradient(180deg, var(--violet), var(--rose));
+            border-radius: 4px;
+            animation: waveBar 1.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes waveBar {
+            0% { height: 10px; }
+            100% { height: var(--h); }
+        }
+
+        /* ====== Hero Section ====== */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-label {
+            font-size: 1rem;
+            letter-spacing: 0.6em;
+            color: var(--violet);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeSlideUp 1.5s 0.5s ease-out forwards;
+        }
+
+        .mega-title {
+            font-size: 14vw;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 40%, #f9a8d4 70%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 60px rgba(168, 85, 247, 0.3));
+            opacity: 0;
+            animation: fadeScaleIn 2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 2.2rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.4em;
+            margin-top: 1.5rem;
+            text-align: center;
+            opacity: 0;
+            animation: fadeSlideUp 2s 1s ease-out forwards;
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            opacity: 0;
+            animation: fadeSlideUp 2s 1.5s ease-out forwards;
+        }
+
+        .tag {
+            padding: 8px 20px;
+            border: 1px solid var(--violet);
+            color: var(--violet);
+            border-radius: 999px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            animation: tagPulse 3s ease-in-out infinite;
+        }
+
+        .tag:nth-child(2) { border-color: var(--rose); color: var(--rose); animation-delay: 1s; }
+        .tag:nth-child(3) { border-color: var(--gold); color: var(--gold); animation-delay: 2s; }
+
+        @keyframes tagPulse {
+            0%, 100% { box-shadow: 0 0 5px currentColor; }
+            50% { box-shadow: 0 0 20px currentColor; }
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 6%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeSlideUp 2s 2s ease-out forwards;
+        }
+
+        .scroll-hint span {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 3px;
+        }
+
+        .scroll-arrow {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--violet), transparent);
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0%, 100% { transform: translateY(0); opacity: 0.6; }
+            50% { transform: translateY(12px); opacity: 0; }
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeScaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ====== Content Sections ====== */
+        .section {
+            position: relative;
+            min-height: 130vh;
+        }
+
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .bg-text {
+            position: absolute;
+            font-size: 20vw;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(168, 85, 247, 0.06);
+            line-height: 1;
+            z-index: 0;
+            white-space: nowrap;
+            transform: scale(1.3);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s;
+        }
+
+        .content-card {
+            position: relative;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(25px);
+            -webkit-backdrop-filter: saturate(180%) blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 4.5rem 4rem;
+            max-width: 960px;
+            width: 90%;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+            opacity: 0;
+            transform: translateY(80px) scale(0.96);
+            filter: blur(8px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            overflow: hidden;
+        }
+
+        /* Animated top border glow */
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--violet), var(--rose), transparent);
+            animation: borderScan 5s linear infinite;
+        }
+
+        @keyframes borderScan {
+            0% { left: -60%; }
+            100% { left: 100%; }
+        }
+
+        .content-card.in-view {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        .chapter-label {
+            font-size: 1rem;
+            color: var(--violet);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.6rem;
+            line-height: 1.8;
+            color: #d1d1d6;
+            font-weight: 400;
+            max-width: 800px;
+        }
+
+        .hl {
+            color: #ffffff;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .hl-violet {
+            color: var(--violet);
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+        }
+
+        .hl-rose {
+            color: var(--rose);
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(244, 63, 94, 0.6);
+        }
+
+        .hl-gold {
+            color: var(--gold);
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+        }
+
+        .hl-cyan {
+            color: var(--cyan);
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(34, 211, 238, 0.6);
+        }
+
+        /* ====== Music Score Section ====== */
+        .music-score {
+            font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            color: var(--violet);
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            text-align: left;
+            line-height: 1.8;
+            box-shadow: inset 0 0 30px rgba(168, 85, 247, 0.05);
+        }
+
+        .music-score .comment { color: #666; }
+        .music-score .keyword { color: var(--rose); }
+        .music-score .string { color: var(--gold); }
+
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ====== Progress Bar ====== */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.05);
+            z-index: 9999;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--violet-deep), var(--violet), var(--rose), var(--gold));
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+            transition: width 0.1s linear;
+        }
+
+        /* ====== Footer ====== */
+        footer {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        footer h2 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #666 0%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: #333;
+            margin-top: 1.5rem;
+        }
+
+        /* ====== Responsive ====== */
+        @media (max-width: 768px) {
+            .mega-title { font-size: 20vw; }
+            .hero-subtitle { font-size: 1.4rem; letter-spacing: 0.2em; }
+            h2 { font-size: 2.4rem; }
+            p { font-size: 1.2rem; }
+            .content-card { padding: 3rem 2rem; border-radius: 24px; }
+            .hero-tags { flex-direction: column; align-items: center; }
+            .bg-text { font-size: 25vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aurora"></div>
+
+    <!-- Floating Music Notes -->
+    <div class="music-particles" id="musicParticles"></div>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- ====== HERO ====== -->
+    <section id="hero">
+        <!-- Soundwave bars behind title -->
+        <div class="soundwave-container" id="soundwave"></div>
+
+        <div class="hero-label">THE VOICE THAT RESHAPES REALITY</div>
+        <h1 class="mega-title">尾巴</h1>
+        <div class="hero-subtitle">声之降临者 · 次元歌姬</div>
+        <div class="hero-tags">
+            <span class="tag">VOCAL · 声乐</span>
+            <span class="tag">20 YEARS OLD</span>
+            <span class="tag">DIMENSION BREAKER</span>
+        </div>
+        <div class="scroll-hint">
+            <span>SCROLL</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ====== Chapter I ====== -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="bg-text">觉醒</div>
+            <div class="content-card observer-item">
+                <div class="chapter-label">Chapter I · 天赋觉醒</div>
+                <h2>出生时，整个产房共振了</h2>
+                <p>二十年前的那个凌晨，当尾巴发出人生中第一声啼哭，<span class="hl-violet">方圆三公里内所有玻璃制品同时碎裂</span>，市地震局紧急发布了一条"不明原因微震"预警。主治医生当场泪流满面，不是因为感动，而是因为他的助听器炸了。后来经物理学家反复测量，确认那声啼哭的频率恰好是<span class="hl">宇宙本底辐射的基频谐波</span>，与大爆炸的余音完美共振。NASA 连夜致电中国科学院，颤抖着问："你们那边……是不是有个新宇宙刚诞生了？"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Chapter II ====== -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="bg-text">声乐</div>
+            <div class="content-card observer-item" style="border-color: rgba(244, 63, 94, 0.2);">
+                <div class="chapter-label" style="color: var(--rose);">Chapter II · 碾压学院</div>
+                <h2 style="background: linear-gradient(135deg, #fff 0%, #fda4af 100%); -webkit-background-clip: text;">声乐教授集体转行</h2>
+                <p>进入音乐学院的第一天，声乐系主任让她来段练声。尾巴清了清嗓子，随便"啊"了一声。<span class="hl-rose">教学楼 B 栋整面外墙的瓷砖齐刷刷掉落</span>，操场上正在军训的大一新生集体站成了军姿——不是自愿的，是被声波频率锁定了肌肉。声乐系十七位教授当场联名写了辞职信，理由只有五个字："教不了，告辞。"院长亲自跪着挽留，表示可以让她直接担任终身荣誉教授。她看了一眼课表，说："<span class="hl-gold">周三下午有奶茶买一送一，没空。</span>"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Chapter III ====== -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="bg-text">HIGH C</div>
+            <div class="content-card observer-item" style="border-color: rgba(251, 191, 36, 0.2);">
+                <div class="chapter-label" style="color: var(--gold);">Chapter III · 物理法则失效</div>
+                <h2 style="background: linear-gradient(135deg, #fff 0%, #fde68a 100%); -webkit-background-clip: text;">一个 High C 撕裂了空间</h2>
+                <p>在一次期末考试中，考官要求她演唱一首意大利歌剧选段。当她飙到 High C 的那一瞬间，<span class="hl-gold">考场内的空气被声波压缩成了等离子态</span>，监控摄像头记录下了一个诡异画面：她的声音在空中形成了一个肉眼可见的金色螺旋冲击波，直冲天际，<span class="hl">直接在平流层上撕开了一个直径 200 米的臭氧层空洞</span>。联合国环境署紧急开会讨论"某东亚女学生的声带是否应该被归类为大规模杀伤性武器"。帕瓦罗蒂的灵魂在天堂抖了三抖，自愿申请降级为"业余爱好者"。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Chapter IV ====== -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="bg-text">SIREN</div>
+            <div class="content-card observer-item" style="border-color: rgba(34, 211, 238, 0.2);">
+                <div class="chapter-label" style="color: var(--cyan);">Chapter IV · 声控万物</div>
+                <h2 style="background: linear-gradient(135deg, #fff 0%, #67e8f9 100%); -webkit-background-clip: text;">让大海倒流的女人</h2>
+                <p>有人说她是21世纪的塞壬海妖，但这种说法侮辱了她的实力——<span class="hl-cyan">塞壬只能迷惑水手，她能让整片太平洋倒流</span>。一个无聊的暑假，她在青岛海边哼了一首小曲，渤海湾的潮汐系统当场紊乱，日本气象厅记录到了一次"反向海啸"。海水不是涌上来，而是集体退到了马里亚纳海沟里躲避。五角大楼秘密档案将她的声音归类为<span class="hl">"Omega级声学威慑力量"</span>，代号"Siren-Zero"。美国海军太平洋舰队司令部恳请她千万不要在洗澡的时候唱歌，因为上次她在浴室唱了一首《我的太阳》，航母上的声呐系统全部显示为"末日来临"。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Chapter V ====== -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="bg-text">DIVA</div>
+            <div class="content-card observer-item">
+                <div class="chapter-label">Chapter V · 降维打击乐坛</div>
+                <h2>格莱美的规则因她改写</h2>
+                <p>当全球音乐界终于意识到这位中国女孩的存在时，格莱美组委会、维也纳金色大厅管理层和全球五大唱片公司的 CEO 联名写了一封跨洋请愿信。信中不是邀请她去参赛或签约，而是<span class="hl-violet">恳求她永远不要进入商业音乐市场</span>，因为一旦她出道，其他所有歌手将集体失业，全球音乐产业GDP将归零后重新以她一人为计量单位。格莱美甚至紧急修改了章程，新增一条："<span class="hl-gold">本奖项不适用于声音已超越人类可理解维度的参赛者。</span>"碧昂斯私下打来电话，哭着说："<span class="hl-rose">姐妹，求你别出道，给我们留条活路。</span>"尾巴正在吃辣条，随口答道："放心，你们那个赛道太窄了，我的舞台是整个银河系。"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Chapter VI ====== -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="bg-text" style="-webkit-text-stroke-color: rgba(244, 63, 94, 0.08);">次元</div>
+            <div class="content-card observer-item" style="border-color: rgba(244, 63, 94, 0.25); background: rgba(40, 5, 20, 0.5);">
+                <div class="chapter-label" style="color: var(--rose);">Chapter VI · 声之神迹</div>
+                <h2 style="background: linear-gradient(135deg, #fff 0%, #fb7185 60%, #fbbf24 100%); -webkit-background-clip: text;">一首歌，唱哭了整个平行宇宙</h2>
+                <p>在一个月色温柔的夜晚，尾巴站在自家阳台上，心血来潮唱了一首《Time to Say Goodbye》。她的声音穿透了大气层，穿越了奥尔特云，<span class="hl-rose">以超光速在宇宙中传播，违反了所有已知的物理学定律</span>。三天后，哈勃望远镜观测到一个震撼的现象：距离地球 4500 光年外的鹰状星云，那根被称为"创生之柱"的宇宙巨柱，<span class="hl">正在以她的歌声频率缓缓共振、发光</span>。SETI 研究所收到了来自 127 个不同星系文明的联合回信，翻译过来只有一句话："<span class="hl-gold">这个声音的主人是谁？我们全体文明愿意臣服。</span>"</p>
+                <div class="music-score">
+                    <span class="comment">// 宇宙声学方程 - 尾巴专属常数</span><br>
+                    <span class="keyword">const</span> WEIBA_FREQUENCY = <span class="string">"∞ Hz"</span>;<br>
+                    <span class="keyword">const</span> IMPACT_RADIUS = <span class="string">"Observable Universe × 10^9"</span>;<br>
+                    <span class="keyword">const</span> LISTENER_STATUS = <span class="string">"永久震撼 + 灵魂升华"</span>;<br>
+                    <span class="comment">// WARNING: 播放此声音可能导致维度坍缩</span><br>
+                    > <span class="cursor-blink">_</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Chapter VII ====== -->
+    <section class="section">
+        <div class="sticky-container">
+            <div class="bg-text">永恒</div>
+            <div class="content-card observer-item" style="max-width: 1060px; border-color: rgba(168, 85, 247, 0.3);">
+                <div class="chapter-label">Finale · 永恒</div>
+                <h2>当她开口，时间为之静止</h2>
+                <p>如今，年仅 20 岁的尾巴，还在音乐学院"象征性地"上着课。但全世界都知道，她上课不是为了学习，而是<span class="hl-violet">为了给老师和同学们一个近距离感受神迹的机会</span>。她每天的日常是：早上用一个轻哼叫醒半个城市的闹钟（物理意义上的），中午随便点个外卖（外卖小哥每次听到她说"谢谢"都会当场顿悟人生），下午在琴房里随便练练声——顺便让方圆五公里内的所有乐器自动进入共鸣状态。有人问她："你的终极梦想是什么？"她从奶茶杯上抬起头，露出一个20岁女孩最平静的笑容，轻声说：</p>
+                <p style="font-size: 2.2rem; color: #fff; margin-top: 2rem; text-align: center; font-weight: 700; text-shadow: 0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(244, 63, 94, 0.3);">
+                    "我想唱一首歌，<br>让整个宇宙安静下来听。"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h2>"♪ The Universe holds its breath when she sings."</h2>
+        <p>© ♾️ 尾巴 · 声之降临者。宇宙级别声学威慑力量持有者。运行环境：Multiverse OS ∞.0</p>
+    </footer>
+
+    <script>
+        // ====== Progress Bar ======
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        });
+
+        // ====== Intersection Observer ======
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.35
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    const bgText = entry.target.previousElementSibling;
+                    if (bgText && bgText.classList.contains('bg-text')) {
+                        bgText.style.transform = 'scale(1)';
+                        bgText.style.opacity = '1';
+                    }
+                } else {
+                    entry.target.classList.remove('in-view');
+                    const bgText = entry.target.previousElementSibling;
+                    if (bgText && bgText.classList.contains('bg-text')) {
+                        bgText.style.transform = 'scale(1.3)';
+                        bgText.style.opacity = '0.5';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.observer-item').forEach(card => {
+            observer.observe(card);
+        });
+
+        // ====== Generate Soundwave Bars ======
+        const soundwave = document.getElementById('soundwave');
+        for (let i = 0; i < 80; i++) {
+            const bar = document.createElement('div');
+            bar.classList.add('wave-bar');
+            const maxH = Math.random() * 120 + 20;
+            bar.style.setProperty('--h', maxH + 'px');
+            bar.style.animationDelay = (Math.random() * 2) + 's';
+            bar.style.animationDuration = (Math.random() * 1 + 0.8) + 's';
+            soundwave.appendChild(bar);
+        }
+
+        // ====== Generate Floating Music Notes ======
+        const notesContainer = document.getElementById('musicParticles');
+        const noteSymbols = ['♪', '♫', '♬', '♩', '𝄞'];
+        for (let i = 0; i < 20; i++) {
+            const note = document.createElement('div');
+            note.classList.add('note');
+            note.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+            note.style.left = Math.random() * 100 + 'vw';
+            note.style.animationDuration = (Math.random() * 15 + 10) + 's';
+            note.style.animationDelay = (Math.random() * 10) + 's';
+            note.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            notesContainer.appendChild(note);
+        }
+    </script>
+</body>
+</html>
