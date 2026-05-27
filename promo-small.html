@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promo Small</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#090d10;color:#f4efe5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+  .promo{
+    width:440px;height:280px;overflow:hidden;position:relative;
+    background:
+      radial-gradient(circle at 80% 15%,rgba(53,217,164,.22),transparent 36%),
+      linear-gradient(135deg,#07090b,#121d24);
+  }
+  .grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(244,239,229,.055) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(244,239,229,.04) 1px,transparent 1px);
+    background-size:36px 36px;
+  }
+  .mark{
+    position:absolute;right:30px;top:30px;width:76px;height:76px;
+    border:2px solid #35d9a4;transform:rotate(45deg);
+    box-shadow:0 0 34px rgba(53,217,164,.22);
+  }
+  .copy{position:absolute;left:30px;right:30px;bottom:30px}
+  .label{color:#35d9a4;font-size:12px;font-weight:800;letter-spacing:.18em}
+  h1{font-size:40px;line-height:1.02;letter-spacing:-.05em;margin:12px 0 10px}
+  h1 span{color:#35d9a4}
+  p{margin:0;color:#c8d0d5;font-size:16px;line-height:1.45;max-width:305px}
+</style>
+</head>
+<body>
+  <section class="promo">
+    <div class="grid"></div>
+    <div class="mark"></div>
+    <div class="copy">
+      <div class="label">LOCAL BACKUP</div>
+      <h1>GPT 对话<span>保险箱</span></h1>
+      <p>自动保存 ChatGPT 页面内容，本地搜索，一键导出。</p>
+    </div>
+  </section>
+</body>
+</html>
