@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <rect width="1200" height="400" fill="#f5f5f7"/>
+
+  <!-- Phone mockup -->
+  <rect x="480" y="40" width="240" height="320" rx="24" fill="#ffffff" stroke="#d2d2d7" stroke-width="1.5"/>
+  <rect x="496" y="64" width="208" height="276" rx="4" fill="#fafafa"/>
+
+  <!-- Status bar -->
+  <rect x="496" y="64" width="208" height="28" fill="#ffffff"/>
+  <text x="516" y="82" font-family="-apple-system,SF Pro Display,sans-serif" font-size="11" fill="#1d1d1f" font-weight="500">9:41</text>
+
+  <!-- App header -->
+  <rect x="496" y="92" width="208" height="36" fill="#ffffff"/>
+  <text x="545" y="115" font-family="-apple-system,SF Pro Display,sans-serif" font-size="13" fill="#1d1d1f" font-weight="600">LinguaLive</text>
+  <line x1="496" y1="128" x2="704" y2="128" stroke="#e5e5e5" stroke-width="0.5"/>
+
+  <!-- Language selector -->
+  <rect x="512" y="140" width="72" height="26" rx="13" fill="#f5f5f7" stroke="#d2d2d7" stroke-width="0.5"/>
+  <text x="530" y="157" font-family="-apple-system,SF Pro Display,sans-serif" font-size="11" fill="#1d1d1f">中文</text>
+  <text x="598" y="158" font-family="-apple-system,SF Pro Display,sans-serif" font-size="14" fill="#6e6e73">&#8644;</text>
+  <rect x="618" y="140" width="72" height="26" rx="13" fill="#f5f5f7" stroke="#d2d2d7" stroke-width="0.5"/>
+  <text x="630" y="157" font-family="-apple-system,SF Pro Display,sans-serif" font-size="11" fill="#1d1d1f">English</text>
+
+  <!-- Source text box -->
+  <rect x="512" y="180" width="176" height="56" rx="10" fill="#ffffff" stroke="#e5e5e5" stroke-width="0.5"/>
+  <text x="524" y="202" font-family="-apple-system,SF Pro Display,sans-serif" font-size="12" fill="#1d1d1f">你好，很高兴认识你</text>
+  <text x="524" y="222" font-family="-apple-system,SF Pro Display,sans-serif" font-size="10" fill="#6e6e73">语音识别完成</text>
+
+  <!-- Translation result box -->
+  <rect x="512" y="248" width="176" height="56" rx="10" fill="#f0f7ff" stroke="#d0e3ff" stroke-width="0.5"/>
+  <text x="524" y="270" font-family="-apple-system,SF Pro Display,sans-serif" font-size="12" fill="#1d1d1f">Hello, nice to meet you</text>
+  <text x="524" y="290" font-family="-apple-system,SF Pro Display,sans-serif" font-size="10" fill="#6e6e73">翻译完成 · 离线</text>
+
+  <!-- Mic button -->
+  <circle cx="600" cy="326" r="16" fill="#1d1d1f"/>
+  <rect x="597" y="318" width="6" height="10" rx="3" fill="white"/>
+  <path d="M594 326 a6 6 0 0 0 12 0" fill="none" stroke="white" stroke-width="1.2"/>
+  <line x1="600" y1="332" x2="600" y2="336" stroke="white" stroke-width="1.2"/>
+
+  <!-- Left labels -->
+  <text x="200" y="160" font-family="-apple-system,SF Pro Display,sans-serif" font-size="28" fill="#1d1d1f" font-weight="600" text-anchor="middle">Offline</text>
+  <text x="200" y="186" font-family="-apple-system,SF Pro Display,sans-serif" font-size="14" fill="#6e6e73" text-anchor="middle">无需网络，随时可用</text>
+
+  <text x="200" y="250" font-family="-apple-system,SF Pro Display,sans-serif" font-size="28" fill="#1d1d1f" font-weight="600" text-anchor="middle">&lt; 2s</text>
+  <text x="200" y="276" font-family="-apple-system,SF Pro Display,sans-serif" font-size="14" fill="#6e6e73" text-anchor="middle">单句翻译延迟</text>
+
+  <!-- Right labels -->
+  <text x="1000" y="160" font-family="-apple-system,SF Pro Display,sans-serif" font-size="28" fill="#1d1d1f" font-weight="600" text-anchor="middle">9</text>
+  <text x="1000" y="186" font-family="-apple-system,SF Pro Display,sans-serif" font-size="14" fill="#6e6e73" text-anchor="middle">支持语言数量</text>
+
+  <text x="1000" y="250" font-family="-apple-system,SF Pro Display,sans-serif" font-size="28" fill="#1d1d1f" font-weight="600" text-anchor="middle">On-device</text>
+  <text x="1000" y="276" font-family="-apple-system,SF Pro Display,sans-serif" font-size="14" fill="#6e6e73" text-anchor="middle">端侧推理，保护隐私</text>
+</svg>

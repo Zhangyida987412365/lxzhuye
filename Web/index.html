@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: #ffffff;
+            color: #1d1d1f;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 120px 24px 80px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            color: #6e6e73;
+            font-size: 1.2rem;
+            max-width: 480px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .project {
+            padding: 80px 0;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .project-image {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 48px;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .project-image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .project-image-grid img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .project h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: #f5f5f7;
+            color: #6e6e73;
+            font-weight: 500;
+        }
+
+        .project p {
+            color: #424245;
+            font-size: 1rem;
+            max-width: 640px;
+            margin-bottom: 28px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .tech-stack span {
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 6px;
+            background: #f5f5f7;
+            color: #6e6e73;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: #1d1d1f;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 980px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .download-btn:hover { opacity: 0.8; }
+
+        .download-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid #e5e5e5;
+            color: #6e6e73;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 640px) {
+            .hero { padding: 80px 20px 60px; }
+            .hero h1 { font-size: 2.2rem; }
+            .project { padding: 48px 0; }
+            .project-image-grid { grid-template-columns: 1fr; }
+            .project h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1>Vibe Coding Portfolio</h1>
+        <p>用 AI 辅助编程构建的真实产品。从想法到可运行的应用，探索人机协作的可能性。</p>
+    </section>
+
+    <div class="container">
+
+        <article class="project">
+            <div class="project-image-grid">
+                <img src="assets/whiteboard-canvas.png" alt="Whiteboard canvas with shape tools">
+                <img src="assets/whiteboard-notes.png" alt="Whiteboard with sticky notes">
+            </div>
+            <h2>Collaborate Whiteboard</h2>
+            <div class="project-meta">
+                <span class="tag">Android</span>
+                <span class="tag">Large Screen</span>
+            </div>
+            <p>
+                面向企业会议室和教育场景的智能交互大屏白板应用。支持无限画布、多点触控书写、智能形状识别、便签协作、多页管理与一键导出。采用高性能 Canvas 渲染引擎，书写延迟极低，配合 AI 形状矫正将手绘线条自动转化为标准图形。适配 65~98 寸大屏设备，支持多人同屏协作与扫码带走会议内容。
+            </p>
+            <div class="tech-stack">
+                <span>Kotlin</span>
+                <span>Jetpack Compose</span>
+                <span>Canvas Engine</span>
+                <span>Hilt DI</span>
+                <span>Multi-touch</span>
+            </div>
+            <a href="https://github.com/lixiao000018/Whiteboard/blob/main/app/build/outputs/apk/debug/app-debug.apk" class="download-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载 APK
+            </a>
+        </article>
+
+        <article class="project">
+            <div class="project-image">
+                <img src="assets/lingualive-hero.svg" alt="LinguaLive offline translation app">
+            </div>
+            <h2>LinguaLive</h2>
+            <div class="project-meta">
+                <span class="tag">Android</span>
+                <span class="tag">Offline AI</span>
+                <span class="tag">N4VR470132</span>
+            </div>
+            <p>
+                完全离线运行的实时翻译与语音识别应用。集成 Whisper 语音引擎与 CTranslate2 神经机器翻译，无需网络即可语音转文字并翻译为目标语言。支持中、英、日、韩、法、德等 9 种语言互译，具备对话模式、实时字幕流式显示、相机 OCR 翻译等能力。所有推理在设备端完成，保护隐私，单句延迟低于 2 秒。
+            </p>
+            <div class="tech-stack">
+                <span>Kotlin</span>
+                <span>Whisper (on-device)</span>
+                <span>CTranslate2</span>
+                <span>NLLB-200</span>
+                <span>Piper TTS</span>
+                <span>JNI / C++</span>
+            </div>
+            <a href="https://github.com/lixiao000018/LinguaLive/blob/main/release/app-release.apk" class="download-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载 APK
+            </a>
+        </article>
+
+    </div>
+
+    <footer>
+        <p>Built with Vibe Coding — AI-assisted development, human-driven design.</p>
+    </footer>
+</body>
+</html>
