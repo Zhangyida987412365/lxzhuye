@@ -74,6 +74,23 @@
             display: block;
         }
 
+        .project-phone-grid {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 48px;
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 32px;
+        }
+
+        .project-phone-grid img {
+            height: 480px;
+            width: auto;
+            border-radius: 12px;
+            display: block;
+        }
+
         .project h2 {
             font-size: 2rem;
             font-weight: 600;
@@ -152,6 +169,8 @@
             .hero h1 { font-size: 2.2rem; }
             .project { padding: 48px 0; }
             .project-image-grid { grid-template-columns: 1fr; }
+            .project-phone-grid { flex-direction: column; align-items: center; padding: 24px; }
+            .project-phone-grid img { height: 360px; }
             .project h2 { font-size: 1.5rem; }
         }
     </style>
@@ -166,8 +185,8 @@
 
         <article class="project">
             <div class="project-image-grid">
-                <img src="Web/assets/whiteboard-canvas.png" alt="Whiteboard canvas with shape tools">
-                <img src="Web/assets/whiteboard-notes.png" alt="Whiteboard with sticky notes">
+                <img src="assets/whiteboard-canvas.png" alt="Whiteboard canvas with shape tools">
+                <img src="assets/whiteboard-notes.png" alt="Whiteboard with sticky notes">
             </div>
             <h2>Collaborate Whiteboard</h2>
             <div class="project-meta">
@@ -175,7 +194,7 @@
                 <span class="tag">Large Screen</span>
             </div>
             <p>
-                面向企业会议室 and 教育场景的智能交互大屏白板应用。支持无限画布、多点触控书写、智能形状识别、便签协作、多页管理与一键导出。采用高性能 Canvas 渲染引擎，书写延迟极低，配合 AI 形状矫正将手绘线条自动转化为标准图形。适配 65~98 寸大屏设备，支持多人同屏协作与扫码带走会议内容。
+                面向企业会议室和教育场景的智能交互大屏白板应用。支持无限画布、多点触控书写、智能形状识别、便签协作、多页管理与一键导出。采用高性能 Canvas 渲染引擎，书写延迟极低，配合 AI 形状矫正将手绘线条自动转化为标准图形。适配 65~98 寸大屏设备，支持多人同屏协作与扫码带走会议内容。
             </p>
             <div class="tech-stack">
                 <span>Kotlin</span>
@@ -191,8 +210,36 @@
         </article>
 
         <article class="project">
+            <div class="project-phone-grid">
+                <img src="assets/ring-health.png" alt="Smart Ring health dashboard">
+                <img src="assets/ring-sleep.png" alt="Smart Ring sleep tracking">
+                <img src="assets/ring-device.png" alt="Smart Ring device management">
+            </div>
+            <h2>Editorial Vitality</h2>
+            <div class="project-meta">
+                <span class="tag">Android</span>
+                <span class="tag">Smart Ring</span>
+                <span class="tag">N4VR470132</span>
+            </div>
+            <p>
+                智能戒指配套健康管理应用。通过蓝牙连接 SY02 智能戒指，实时采集心率、血氧、HRV、压力等生理数据，并提供睡眠分期分析（清醒/浅睡/深睡/REM）、运动记录与卡路里追踪。深色沉浸式 UI 设计，数据可视化直观清晰。支持睡眠目标设定、设备固件升级、消息提醒推送与远程拍照控制等功能。
+            </p>
+            <div class="tech-stack">
+                <span>Kotlin</span>
+                <span>Jetpack Compose</span>
+                <span>BLE</span>
+                <span>Health Sensors</span>
+                <span>Data Visualization</span>
+            </div>
+            <a href="#" class="download-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载 APK
+            </a>
+        </article>
+
+        <article class="project">
             <div class="project-image">
-                <img src="Web/assets/lingualive-hero.svg" alt="LinguaLive offline translation app">
+                <img src="assets/lingualive-hero.svg" alt="LinguaLive offline translation app">
             </div>
             <h2>LinguaLive</h2>
             <div class="project-meta">
