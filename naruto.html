@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="สำรวจโลกของนินจาในเกมนารูโตะ - เกมต่อสู้อะนิเมะที่ดีที่สุด">
+    <title>นารูโตะ: โลกแห่งนินจา - เกมผจญภัย</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS Reset & Variables ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #FF6B00;
+            --primary-red: #E63946;
+            --accent-gold: #FFB703;
+            --accent-blue: #2196F3;
+            --dark-bg: #0a0a12;
+            --dark-surface: #12121e;
+            --dark-card: #1a1a2e;
+            --dark-elevated: #222240;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b8;
+            --gradient-fire: linear-gradient(135deg, #FF6B00, #E63946, #FF6B00);
+            --gradient-chakra: linear-gradient(135deg, #2196F3, #7C4DFF, #E040FB);
+            --gradient-sage: linear-gradient(135deg, #00C853, #00E5FF);
+            --glass-bg: rgba(26, 26, 46, 0.6);
+            --glass-border: rgba(255, 107, 0, 0.15);
+            --shadow-fire: 0 0 40px rgba(255, 107, 0, 0.2);
+            --font-thai: 'Noto Sans Thai', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-thai);
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-orange);
+            border-radius: 4px;
+        }
+
+        /* ===== Particle Background ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== Navigation ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 18, 0.85);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 40px;
+            background: rgba(10, 10, 18, 0.95);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-fire);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 0, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(255, 107, 0, 0.7); }
+        }
+
+        .nav-logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-fire);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 10px 24px;
+            background: var(--gradient-fire);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: var(--font-thai);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.4);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            filter: brightness(0.5) saturate(1.3);
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(10, 10, 18, 0.3) 0%,
+                rgba(10, 10, 18, 0.6) 50%,
+                rgba(10, 10, 18, 1) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(255, 107, 0, 0.15);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 7vw, 80px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-fire);
+            border-radius: 2px;
+            animation: expand 1.2s ease-out 1s both;
+        }
+
+        @keyframes expand {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 36px;
+            line-height: 1.8;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .btn-primary {
+            padding: 16px 36px;
+            background: var(--gradient-fire);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: var(--font-thai);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 0, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 16px 36px;
+            background: transparent;
+            border: 2px solid rgba(255, 107, 0, 0.5);
+            border-radius: 50px;
+            color: var(--primary-orange);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: var(--font-thai);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 107, 0, 0.1);
+            border-color: var(--primary-orange);
+            transform: translateY(-3px);
+        }
+
+        /* ===== Scroll Indicator ===== */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(255, 107, 0, 0.5);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .scroll-indicator span::after {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background: var(--primary-orange);
+            border-radius: 2px;
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        @keyframes scroll-dot {
+            0% { opacity: 1; top: 6px; }
+            100% { opacity: 0; top: 22px; }
+        }
+
+        /* ===== Section Base ===== */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== Features Grid ===== */
+        .features {
+            background: var(--dark-surface);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 36px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-fire);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 107, 0, 0.3);
+            box-shadow: var(--shadow-fire);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon.fire { background: linear-gradient(135deg, rgba(255,107,0,0.2), rgba(230,57,70,0.2)); }
+        .feature-icon.chakra { background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(124,77,255,0.2)); }
+        .feature-icon.sage { background: linear-gradient(135deg, rgba(0,200,83,0.2), rgba(0,229,255,0.2)); }
+        .feature-icon.thunder { background: linear-gradient(135deg, rgba(255,183,3,0.2), rgba(255,107,0,0.2)); }
+        .feature-icon.eye { background: linear-gradient(135deg, rgba(230,57,70,0.2), rgba(124,77,255,0.2)); }
+        .feature-icon.sword { background: linear-gradient(135deg, rgba(160,160,184,0.2), rgba(33,150,243,0.2)); }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* ===== Showcase Section ===== */
+        .showcase {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+
+        .showcase-grid.reverse {
+            direction: rtl;
+        }
+
+        .showcase-grid.reverse > * {
+            direction: ltr;
+        }
+
+        .showcase-image {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow-fire);
+            border: 1px solid var(--glass-border);
+        }
+
+        .showcase-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+
+        .showcase-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .showcase-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,107,0,0.1), transparent);
+            pointer-events: none;
+        }
+
+        .showcase-text h3 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .showcase-text .accent {
+            color: var(--primary-orange);
+        }
+
+        .showcase-text p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .showcase-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 900;
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ===== Characters Section ===== */
+        .characters {
+            background: var(--dark-surface);
+        }
+
+        .characters-scroll {
+            display: flex;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .character-card {
+            min-width: 260px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+
+        .character-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-fire);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .character-avatar {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-avatar.naruto-bg { background: linear-gradient(180deg, rgba(255,107,0,0.3), transparent); }
+        .character-avatar.sasuke-bg { background: linear-gradient(180deg, rgba(124,77,255,0.3), transparent); }
+        .character-avatar.sakura-bg { background: linear-gradient(180deg, rgba(233,30,99,0.3), transparent); }
+        .character-avatar.kakashi-bg { background: linear-gradient(180deg, rgba(160,160,184,0.3), transparent); }
+        .character-avatar.itachi-bg { background: linear-gradient(180deg, rgba(230,57,70,0.3), transparent); }
+
+        .character-info {
+            padding: 20px;
+        }
+
+        .character-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .character-title {
+            font-size: 13px;
+            color: var(--primary-orange);
+            margin-bottom: 12px;
+        }
+
+        .character-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .character-rank {
+            display: flex;
+            gap: 4px;
+            margin-top: 12px;
+        }
+
+        .rank-star {
+            color: var(--accent-gold);
+            font-size: 14px;
+        }
+
+        /* ===== Game Modes ===== */
+        .game-modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mode-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,107,0,0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .mode-card:hover::before {
+            opacity: 1;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-fire);
+            border-color: rgba(255, 107, 0, 0.3);
+        }
+
+        .mode-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .mode-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .mode-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .mode-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mode-badge.hot {
+            background: rgba(230, 57, 70, 0.2);
+            color: var(--primary-red);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .mode-badge.new {
+            background: rgba(0, 200, 83, 0.2);
+            color: #00C853;
+            border: 1px solid rgba(0, 200, 83, 0.3);
+        }
+
+        .mode-badge.pvp {
+            background: rgba(124, 77, 255, 0.2);
+            color: #7C4DFF;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+        }
+
+        /* ===== CTA Section ===== */
+        .cta-section {
+            text-align: center;
+            background: var(--dark-surface);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,107,0,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 550px;
+            margin: 0 auto 36px;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: var(--dark-surface);
+            border-top: 1px solid var(--glass-border);
+            padding: 60px 40px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 22px;
+            font-weight: 800;
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-orange);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 107, 0, 0.1);
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* ===== Animations ===== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Floating Elements ===== */
+        .floating-kunai {
+            position: fixed;
+            font-size: 24px;
+            opacity: 0.08;
+            z-index: 0;
+            animation: float-rotate 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float-rotate {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(720deg); }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .navbar { padding: 12px 20px; }
+            .nav-links { display: none; }
+            section { padding: 60px 20px; }
+            .showcase-grid { grid-template-columns: 1fr; gap: 30px; }
+            .showcase-grid.reverse { direction: ltr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .hero h1 { font-size: 36px; }
+        }
+
+        @media (max-width: 600px) {
+            .features-grid { grid-template-columns: 1fr; }
+            .game-modes-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .showcase-stats { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+        }
+
+        /* ===== Kanji Watermark ===== */
+        .kanji-watermark {
+            position: fixed;
+            font-size: 300px;
+            font-weight: 900;
+            opacity: 0.02;
+            z-index: 0;
+            pointer-events: none;
+            color: var(--primary-orange);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Kanji Watermark -->
+    <div class="kanji-watermark">忍</div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Floating Elements -->
+    <div class="floating-kunai" style="left: 10%; animation-delay: 0s; animation-duration: 18s;">🔥</div>
+    <div class="floating-kunai" style="left: 30%; animation-delay: 3s; animation-duration: 22s;">⚡</div>
+    <div class="floating-kunai" style="left: 55%; animation-delay: 6s; animation-duration: 16s;">🌀</div>
+    <div class="floating-kunai" style="left: 75%; animation-delay: 9s; animation-duration: 20s;">💫</div>
+    <div class="floating-kunai" style="left: 90%; animation-delay: 12s; animation-duration: 24s;">🔥</div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">忍</div>
+            <span class="nav-logo-text">NARUTO WORLD</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">คุณสมบัติ</a></li>
+            <li><a href="#gameplay">เกมเพลย์</a></li>
+            <li><a href="#characters">ตัวละคร</a></li>
+            <li><a href="#modes">โหมดเกม</a></li>
+        </ul>
+        <a href="#download" class="nav-cta">ดาวน์โหลดฟรี</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <img src="naruto_hero.png" alt="นารูโตะ โลกแห่งนินจา">
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">🔥 เกมนินจาอันดับ 1 ของโลก</div>
+            <h1>
+                โลกแห่ง<span class="highlight">นินจา</span><br>
+                รอคุณอยู่
+            </h1>
+            <p class="hero-desc">
+                ก้าวเข้าสู่โลกนินจาสุดยิ่งใหญ่! เลือกนินจาที่คุณชื่นชอบ ฝึกฝนจุทสึอันทรงพลัง 
+                และต่อสู้เพื่อพิสูจน์ตัวเองในฐานะโฮคาเงะคนต่อไป
+            </p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn-primary">🎮 เริ่มเล่นเลย</a>
+                <a href="#gameplay" class="btn-secondary">▶ ดูตัวอย่าง</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header animate-on-scroll">
+            <span class="section-tag">คุณสมบัติ</span>
+            <h2 class="section-title">ทำไมต้องเลือกเกมนี้?</h2>
+            <p class="section-subtitle">สัมผัสประสบการณ์โลกนินจาที่สมจริงที่สุดเท่าที่เคยมีมา</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon fire">🔥</div>
+                <h3>ระบบจุทสึสุดอลังการ</h3>
+                <p>ปลดปล่อยพลังจุทสึกว่า 500 ท่า ตั้งแต่ราเซนกัน ชิโดริ ไปจนถึงอะมะเทระสุ สร้างคอมโบที่ไม่เหมือนใคร</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon chakra">💠</div>
+                <h3>ระบบจักระอันลึกซึ้ง</h3>
+                <p>บริหารจักระอย่างชาญฉลาด เรียนรู้การควบคุมธาตุทั้ง 5 — ไฟ น้ำ ลม ดิน สายฟ้า เพื่อเอาชนะศัตรู</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon sage">🌿</div>
+                <h3>โหมดเซนนิน</h3>
+                <p>ปลดล็อกโหมดเซนนินเพื่อเพิ่มพลังอย่างมหาศาล เรียนรู้ศิลปะการรับรู้พลังธรรมชาติ</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon thunder">⚡</div>
+                <h3>ต่อสู้แบบเรียลไทม์</h3>
+                <p>ระบบต่อสู้แบบเรียลไทม์ที่ลื่นไหล 60 FPS พร้อมระบบ combo สุดมันส์ที่ทำให้คุณรู้สึกเหมือนนินจาตัวจริง</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon eye">👁️</div>
+                <h3>ตาชารินกัน & รินเนกัน</h3>
+                <p>ปลดล็อกดวงตาแห่งพลังสุดเทพ ใช้เก็นจุทสึควบคุมศัตรู หรือใช้รินเนกันเรียกใช้หกวิถี</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon sword">⚔️</div>
+                <h3>โลกเปิดกว้าง</h3>
+                <p>สำรวจหมู่บ้านโคโนฮะ ซูนะ คิริ และอีกมากมาย พร้อมเนื้อเรื่องที่ตามติดจากอะนิเมะ</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gameplay Showcase -->
+    <section id="gameplay">
+        <div class="section-header animate-on-scroll">
+            <span class="section-tag">เกมเพลย์</span>
+            <h2 class="section-title">ประสบการณ์ที่ไม่เหมือนใคร</h2>
+            <p class="section-subtitle">กราฟิกสุดอลังการพร้อมระบบเกมที่ออกแบบมาอย่างพิถีพิถัน</p>
+        </div>
+
+        <div class="showcase">
+            <div class="showcase-grid animate-on-scroll">
+                <div class="showcase-image">
+                    <img src="naruto_characters.png" alt="ตัวละครนินจา">
+                </div>
+                <div class="showcase-text">
+                    <h3>เลือก<span class="accent">นินจา</span>ของคุณ</h3>
+                    <p>
+                        มีตัวละครให้เลือกมากกว่า 120 ตัว จากทุกยุคของนารูโตะ ตั้งแต่ยุคก่อตั้งหมู่บ้าน 
+                        ไปจนถึงยุคโบรูโตะ แต่ละตัวมีท่าจุทสึ สกิล และสไตล์การต่อสู้ที่แตกต่างกัน
+                    </p>
+                    <div class="showcase-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">120+</div>
+                            <div class="stat-label">ตัวละคร</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">จุทสึ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">แมพ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="showcase-grid reverse animate-on-scroll">
+                <div class="showcase-image">
+                    <img src="naruto_battle.png" alt="ระบบต่อสู้">
+                </div>
+                <div class="showcase-text">
+                    <h3>ระบบ<span class="accent">ต่อสู้</span>สุดมันส์</h3>
+                    <p>
+                        ระบบต่อสู้แบบ 3D ที่ลื่นไหลและตื่นเต้น คอมโบที่ร้อยเข้ากันอย่างสมบูรณ์ 
+                        อัลติเมทจุทสึที่สวยงามน่าตื่นตาตื่นใจ ระบบหลบ กัน และ Counter ที่ทำให้ทุกการต่อสู้ไม่ซ้ำกัน
+                    </p>
+                    <div class="showcase-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">60</div>
+                            <div class="stat-label">FPS</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">4K</div>
+                            <div class="stat-label">กราฟิก</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">3D</div>
+                            <div class="stat-label">ต่อสู้</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Characters Section -->
+    <section class="characters" id="characters">
+        <div class="section-header animate-on-scroll">
+            <span class="section-tag">ตัวละคร</span>
+            <h2 class="section-title">นินจาในตำนาน</h2>
+            <p class="section-subtitle">พบกับนินจาสุดเท่จากเรื่องราวนารูโตะ</p>
+        </div>
+        <div class="characters-scroll">
+            <div class="character-card animate-on-scroll">
+                <div class="character-avatar naruto-bg">🦊</div>
+                <div class="character-info">
+                    <div class="character-name">นารูโตะ อุซึมากิ</div>
+                    <div class="character-title">โฮคาเงะรุ่นที่ 7</div>
+                    <div class="character-desc">จินจูริกิคิวบิผู้กลายเป็นฮีโร่ของโลกนินจา ผู้ใช้โหมดเซนนินและคิวบิ</div>
+                    <div class="character-rank">
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                    </div>
+                </div>
+            </div>
+            <div class="character-card animate-on-scroll">
+                <div class="character-avatar sasuke-bg">⚡</div>
+                <div class="character-info">
+                    <div class="character-name">ซาสึเกะ อุจิวะ</div>
+                    <div class="character-title">นินจาเงาแห่งโคโนฮะ</div>
+                    <div class="character-desc">อัจฉริยะแห่งตระกูลอุจิวะ ผู้ครอบครองรินเนกันและเอเทอร์นัลมังเกเคียวชารินกัน</div>
+                    <div class="character-rank">
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                    </div>
+                </div>
+            </div>
+            <div class="character-card animate-on-scroll">
+                <div class="character-avatar sakura-bg">🌸</div>
+                <div class="character-info">
+                    <div class="character-name">ซากุระ ฮารุโนะ</div>
+                    <div class="character-title">นินจาแพทย์แห่งโคโนฮะ</div>
+                    <div class="character-desc">ศิษย์ของซึนาเดะ ผู้มีพลังกำปั้นมหาศาลและความสามารถในการรักษาขั้นเทพ</div>
+                    <div class="character-rank">
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">☆</span>
+                    </div>
+                </div>
+            </div>
+            <div class="character-card animate-on-scroll">
+                <div class="character-avatar kakashi-bg">📖</div>
+                <div class="character-info">
+                    <div class="character-name">คาคาชิ ฮาตาเกะ</div>
+                    <div class="character-title">นินจาคัดลอก - โฮคาเงะรุ่นที่ 6</div>
+                    <div class="character-desc">อัจฉริยะผู้ลอกเลียนจุทสึได้กว่า 1,000 ท่า ผู้คิดค้นชิโดริ</div>
+                    <div class="character-rank">
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                    </div>
+                </div>
+            </div>
+            <div class="character-card animate-on-scroll">
+                <div class="character-avatar itachi-bg">🌙</div>
+                <div class="character-info">
+                    <div class="character-name">อิทาจิ อุจิวะ</div>
+                    <div class="character-title">ฮีโร่เงาแห่งโคโนฮะ</div>
+                    <div class="character-desc">อัจฉริยะแห่งตระกูลอุจิวะ ผู้เสียสละทุกอย่างเพื่อหมู่บ้าน ผู้ใช้ซึคุโยมิและอะมะเทระสุ</div>
+                    <div class="character-rank">
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                        <span class="rank-star">★</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Modes -->
+    <section id="modes">
+        <div class="section-header animate-on-scroll">
+            <span class="section-tag">โหมดเกม</span>
+            <h2 class="section-title">หลากหลายโหมดเกม</h2>
+            <p class="section-subtitle">เลือกสไตล์การเล่นที่เหมาะกับคุณ</p>
+        </div>
+        <div class="game-modes-grid">
+            <div class="mode-card animate-on-scroll">
+                <div class="mode-icon">📜</div>
+                <h3>โหมดเนื้อเรื่อง</h3>
+                <p>ติดตามเรื่องราวของนารูโตะตั้งแต่เด็กจนเป็นโฮคาเงะ พร้อมฉากคัทซีนสุดอลังการ</p>
+                <span class="mode-badge hot">ยอดนิยม</span>
+            </div>
+            <div class="mode-card animate-on-scroll">
+                <div class="mode-icon">⚔️</div>
+                <h3>PVP ออนไลน์</h3>
+                <p>ท้าดวลกับผู้เล่นทั่วโลกแบบเรียลไทม์ ไต่อันดับเพื่อขึ้นสู่ตำแหน่งโฮคาเงะ</p>
+                <span class="mode-badge pvp">แข่งขัน</span>
+            </div>
+            <div class="mode-card animate-on-scroll">
+                <div class="mode-icon">🏯</div>
+                <h3>สงครามนินจา</h3>
+                <p>เข้าร่วมสงครามนินจาครั้งใหญ่ 100 vs 100 เลือกข้างและต่อสู้เพื่อฝ่ายของคุณ</p>
+                <span class="mode-badge new">ใหม่</span>
+            </div>
+            <div class="mode-card animate-on-scroll">
+                <div class="mode-icon">🐉</div>
+                <h3>บอสเรด</h3>
+                <p>รวมทีม 4 คน ปะทะบอสสุดโหดอย่างมาดาระ คางุยะ และจูบิ ลุ้นรับของรางวัลสุดพิเศษ</p>
+                <span class="mode-badge hot">ยอดนิยม</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="download">
+        <div class="cta-content animate-on-scroll">
+            <h2>พร้อมที่จะเป็น<br><span class="highlight" style="background: var(--gradient-fire); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">โฮคาเงะ</span>หรือยัง?</h2>
+            <p>ดาวน์โหลดฟรีวันนี้และเริ่มต้นเส้นทางนินจาของคุณ ผู้เล่นกว่า 50 ล้านคนทั่วโลกรอคุณอยู่!</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">📱 ดาวน์โหลด iOS</a>
+                <a href="#" class="btn-primary" style="background: var(--gradient-chakra);">🤖 ดาวน์โหลด Android</a>
+                <a href="#" class="btn-secondary">💻 เล่นบน PC</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>🔥 NARUTO WORLD</h3>
+                <p>เกมนินจาที่ดีที่สุดในโลก สัมผัสประสบการณ์โลกชิโนบิอันกว้างใหญ่ พร้อมต่อสู้และผจญภัยไปกับเพื่อนๆ ทั่วโลก</p>
+            </div>
+            <div class="footer-col">
+                <h4>เกมของเรา</h4>
+                <a href="#">เนื้อเรื่อง</a>
+                <a href="#">ตัวละคร</a>
+                <a href="#">อัปเดต</a>
+                <a href="#">อีเวนท์</a>
+            </div>
+            <div class="footer-col">
+                <h4>ชุมชน</h4>
+                <a href="#">ฟอรั่ม</a>
+                <a href="#">Discord</a>
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+            </div>
+            <div class="footer-col">
+                <h4>สนับสนุน</h4>
+                <a href="#">ช่วยเหลือ</a>
+                <a href="#">ติดต่อเรา</a>
+                <a href="#">นโยบายความเป็นส่วนตัว</a>
+                <a href="#">เงื่อนไขการใช้งาน</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Naruto World Game. สงวนลิขสิทธิ์ทั้งหมด | นารูโตะ © มาซาชิ คิชิโมโตะ / ชูเอชะ</p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== Particle System =====
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.3 + 0.1;
+                this.color = ['#FF6B00', '#E63946', '#FFB703', '#2196F3'][Math.floor(Math.random() * 4)];
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ===== Navbar Scroll Effect =====
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== Scroll Animations =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ===== Smooth Scroll for Nav Links =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ===== Character Cards Horizontal Scroll =====
+        const scrollContainer = document.querySelector('.characters-scroll');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        scrollContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - scrollContainer.offsetLeft;
+            scrollLeft = scrollContainer.scrollLeft;
+            scrollContainer.style.cursor = 'grabbing';
+        });
+
+        scrollContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+            scrollContainer.style.cursor = 'grab';
+        });
+
+        scrollContainer.addEventListener('mouseup', () => {
+            isDown = false;
+            scrollContainer.style.cursor = 'grab';
+        });
+
+        scrollContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - scrollContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            scrollContainer.scrollLeft = scrollLeft - walk;
+        });
+    </script>
+</body>
+</html>
