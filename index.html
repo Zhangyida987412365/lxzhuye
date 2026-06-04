@@ -8,266 +8,509 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-            background: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: #000;
             color: #1d1d1f;
-            line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 48px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+
+        nav .logo {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #f5f5f7;
+            letter-spacing: -0.01em;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        nav .nav-links a {
+            color: #a1a1a6;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        nav .nav-links a:hover {
+            color: #f5f5f7;
+        }
+
+        /* Hero */
         .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 120px 24px 80px;
+            padding: 120px 24px;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(66, 133, 244, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .hero h1 {
-            font-size: 3.2rem;
+            font-size: clamp(3rem, 8vw, 5.5rem);
             font-weight: 700;
-            letter-spacing: -0.03em;
-            color: #1d1d1f;
-            margin-bottom: 16px;
+            letter-spacing: -0.04em;
+            color: #f5f5f7;
+            line-height: 1.05;
+            margin-bottom: 24px;
         }
 
-        .hero p {
-            color: #6e6e73;
-            font-size: 1.2rem;
-            max-width: 480px;
-            margin: 0 auto;
+        .hero h1 span {
+            background: linear-gradient(90deg, #2997ff, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: #86868b;
+            max-width: 600px;
+            line-height: 1.5;
             font-weight: 400;
         }
 
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 0 24px 80px;
+        .hero .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #6e6e73;
+            font-size: 0.8rem;
+            animation: float 2s ease-in-out infinite;
         }
 
-        .project {
-            padding: 80px 0;
-            border-top: 1px solid #e5e5e5;
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
         }
 
-        .project-image {
+        /* Project Sections */
+        .project-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 24px;
+            position: relative;
+        }
+
+        .project-section.light {
+            background: #f5f5f7;
+        }
+
+        .project-section.dark {
+            background: #000;
+        }
+
+        .project-section.white {
+            background: #fff;
+        }
+
+        .project-content {
+            max-width: 1120px;
             width: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 48px;
+            text-align: center;
         }
 
-        .project-image img {
-            width: 100%;
-            height: auto;
-            display: block;
+        .project-content .overline {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
 
-        .project-image-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 48px;
+        .project-section.dark .overline {
+            color: #a1a1a6;
         }
 
-        .project-image-grid img {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            display: block;
+        .project-section.light .overline,
+        .project-section.white .overline {
+            color: #6e6e73;
         }
 
-        .project-phone-grid {
+        .project-content h2 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .project-section.dark h2 {
+            color: #f5f5f7;
+        }
+
+        .project-section.light h2,
+        .project-section.white h2 {
+            color: #1d1d1f;
+        }
+
+        .project-content .description {
+            font-size: clamp(1rem, 1.5vw, 1.25rem);
+            line-height: 1.6;
+            max-width: 680px;
+            margin: 0 auto 20px;
+        }
+
+        .project-section.dark .description {
+            color: #86868b;
+        }
+
+        .project-section.light .description,
+        .project-section.white .description {
+            color: #6e6e73;
+        }
+
+        .project-content .tech-tags {
             display: flex;
             justify-content: center;
-            gap: 24px;
+            flex-wrap: wrap;
+            gap: 8px;
             margin-bottom: 48px;
-            background: #f5f5f7;
-            border-radius: 12px;
-            padding: 32px;
         }
 
-        .project-phone-grid img {
-            height: 480px;
-            width: auto;
-            border-radius: 12px;
-            display: block;
-        }
-
-        .project h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-        }
-
-        .project-meta {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .tag {
+        .tech-tags span {
             font-size: 0.75rem;
-            padding: 3px 10px;
-            border-radius: 100px;
-            background: #f5f5f7;
-            color: #6e6e73;
+            padding: 5px 14px;
+            border-radius: 980px;
             font-weight: 500;
         }
 
-        .project p {
-            color: #424245;
-            font-size: 1rem;
-            max-width: 640px;
-            margin-bottom: 28px;
+        .project-section.dark .tech-tags span {
+            background: rgba(255, 255, 255, 0.08);
+            color: #a1a1a6;
         }
 
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 32px;
-        }
-
-        .tech-stack span {
-            font-size: 0.8rem;
-            padding: 4px 12px;
-            border-radius: 6px;
-            background: #f5f5f7;
+        .project-section.light .tech-tags span,
+        .project-section.white .tech-tags span {
+            background: rgba(0, 0, 0, 0.05);
             color: #6e6e73;
         }
 
-        .download-btn {
+        /* Image displays */
+        .image-showcase {
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .image-showcase.landscape {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .image-showcase.landscape img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .image-showcase.landscape img:hover {
+            transform: scale(1.02);
+        }
+
+        .image-showcase.phones {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 32px;
+            padding: 40px 0;
+        }
+
+        .image-showcase.phones img {
+            height: clamp(360px, 50vh, 560px);
+            width: auto;
+            border-radius: 20px;
+            display: block;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .image-showcase.phones img:hover {
+            transform: translateY(-8px);
+        }
+
+        .image-showcase.full img {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            border-radius: 16px;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .image-showcase.full img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Buttons */
+        .btn-row {
+            margin-top: 32px;
+        }
+
+        .btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 28px;
-            background: #1d1d1f;
-            color: #fff;
-            text-decoration: none;
+            padding: 14px 32px;
             border-radius: 980px;
+            text-decoration: none;
+            font-size: 0.95rem;
             font-weight: 500;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
+            transition: all 0.3s;
         }
 
-        .download-btn:hover { opacity: 0.8; }
+        .btn-primary {
+            background: #0071e3;
+            color: #fff;
+        }
 
-        .download-btn svg {
+        .btn-primary:hover {
+            background: #0077ed;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #2997ff;
+            border: 1px solid #2997ff;
+        }
+
+        .btn-secondary:hover {
+            background: #2997ff;
+            color: #fff;
+        }
+
+        .project-section.dark .btn-secondary {
+            color: #2997ff;
+            border-color: #2997ff;
+        }
+
+        .btn svg {
             width: 16px;
             height: 16px;
         }
 
+        /* Footer */
         footer {
+            padding: 48px 24px;
             text-align: center;
-            padding: 40px 24px;
-            border-top: 1px solid #e5e5e5;
+            background: #000;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        footer p {
             color: #6e6e73;
             font-size: 0.85rem;
         }
 
-        @media (max-width: 640px) {
-            .hero { padding: 80px 20px 60px; }
-            .hero h1 { font-size: 2.2rem; }
-            .project { padding: 48px 0; }
-            .project-image-grid { grid-template-columns: 1fr; }
-            .project-phone-grid { flex-direction: column; align-items: center; padding: 24px; }
-            .project-phone-grid img { height: 360px; }
-            .project h2 { font-size: 1.5rem; }
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-delay-1 { transition-delay: 0.1s; }
+        .fade-in-delay-2 { transition-delay: 0.2s; }
+        .fade-in-delay-3 { transition-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            nav .nav-links { gap: 20px; }
+
+            .project-section { padding: 80px 20px; min-height: auto; }
+
+            .image-showcase.landscape {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .image-showcase.phones {
+                gap: 12px;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 20px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .image-showcase.phones img {
+                height: 380px;
+                flex-shrink: 0;
+            }
+
+            .btn { padding: 12px 24px; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 480px) {
+            nav .nav-links a { font-size: 0.7rem; }
+            nav .nav-links { gap: 16px; }
+
+            .image-showcase.phones img {
+                height: 320px;
+            }
         }
     </style>
 </head>
 <body>
+    <nav>
+        <div class="logo">Vibe Coding</div>
+        <div class="nav-links">
+            <a href="#whiteboard">Whiteboard</a>
+            <a href="#vitality">Vitality</a>
+            <a href="#lingualive">LinguaLive</a>
+        </div>
+    </nav>
+
     <section class="hero">
-        <h1>Vibe Coding Portfolio</h1>
-        <p>用 AI 辅助编程构建的真实产品。从想法到可运行的应用，探索人机协作的可能性。</p>
+        <h1 class="fade-in">用代码<span>创造产品</span></h1>
+        <p class="subtitle fade-in fade-in-delay-1">AI 辅助编程构建的真实应用。从想法到可运行的产品，探索人机协作的无限可能。</p>
+        <div class="scroll-hint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
     </section>
 
-    <div class="container">
-
-        <article class="project">
-            <div class="project-image-grid">
-                <img src="Web/assets/whiteboard-canvas.png" alt="Whiteboard canvas with shape tools">
-                <img src="Web/assets/whiteboard-notes.png" alt="Whiteboard with sticky notes">
-            </div>
-            <h2>Collaborate Whiteboard</h2>
-            <div class="project-meta">
-                <span class="tag">Android</span>
-                <span class="tag">Large Screen</span>
-            </div>
-            <p>
-                面向企业会议室和教育场景的智能交互大屏白板应用。支持无限画布、多点触控书写、智能形状识别、便签协作、多页管理与一键导出。采用高性能 Canvas 渲染引擎，书写延迟极低，配合 AI 形状矫正将手绘线条自动转化为标准图形。适配 65~98 寸大屏设备，支持多人同屏协作与扫码带走会议内容。
-            </p>
-            <div class="tech-stack">
+    <section class="project-section light" id="whiteboard">
+        <div class="project-content">
+            <p class="overline fade-in">Android · Large Screen</p>
+            <h2 class="fade-in">Collaborate Whiteboard</h2>
+            <p class="description fade-in fade-in-delay-1">面向企业会议室和教育场景的智能交互大屏白板。无限画布、多点触控书写、AI 形状矫正，适配 65~98 寸设备，支持多人同屏协作。</p>
+            <div class="tech-tags fade-in fade-in-delay-2">
                 <span>Kotlin</span>
                 <span>Jetpack Compose</span>
                 <span>Canvas Engine</span>
                 <span>Hilt DI</span>
                 <span>Multi-touch</span>
             </div>
-            <a href="https://github.com/lixiao000018/Whiteboard/blob/main/app/build/outputs/apk/debug/app-debug.apk" class="download-btn" target="_blank">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                下载 APK
-            </a>
-        </article>
+            <div class="image-showcase landscape fade-in fade-in-delay-2">
+                <img src="Web/assets/whiteboard-canvas.png" alt="Whiteboard canvas with shape tools">
+                <img src="Web/assets/whiteboard-notes.png" alt="Whiteboard with sticky notes">
+            </div>
+            <div class="btn-row fade-in fade-in-delay-3">
+                <a href="https://github.com/lixiao000018/Whiteboard/blob/main/app/build/outputs/apk/debug/app-debug.apk" class="btn btn-primary" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    下载 APK
+                </a>
+            </div>
+        </div>
+    </section>
 
-        <article class="project">
-            <div class="project-phone-grid">
-                <img src="Web/assets/ring-health.png" alt="Smart Ring health dashboard">
-                <img src="Web/assets/ring-sleep.png" alt="Smart Ring sleep tracking">
-                <img src="Web/assets/ring-device.png" alt="Smart Ring device management">
-            </div>
-            <h2>Editorial Vitality</h2>
-            <div class="project-meta">
-                <span class="tag">Android</span>
-                <span class="tag">Smart Ring</span>
-                <span class="tag">N4VR470132</span>
-            </div>
-            <p>
-                智能戒指配套健康管理应用。通过蓝牙连接 SY02 智能戒指，实时采集心率、血氧、HRV、压力等生理数据，并提供睡眠分期分析（清醒/浅睡/深睡/REM）、运动记录与卡路里追踪。深色沉浸式 UI 设计，数据可视化直观清晰。支持睡眠目标设定、设备固件升级、消息提醒推送与远程拍照控制等功能。
-            </p>
-            <div class="tech-stack">
+    <section class="project-section dark" id="vitality">
+        <div class="project-content">
+            <p class="overline fade-in">Android · Smart Ring</p>
+            <h2 class="fade-in">Editorial Vitality</h2>
+            <p class="description fade-in fade-in-delay-1">智能戒指配套健康管理应用。蓝牙连接 SY02 戒指，实时采集心率、血氧、HRV 数据，提供睡眠分期分析与运动追踪。深色沉浸式设计，数据可视化直观清晰。</p>
+            <div class="tech-tags fade-in fade-in-delay-2">
                 <span>Kotlin</span>
                 <span>Jetpack Compose</span>
                 <span>BLE</span>
                 <span>Health Sensors</span>
                 <span>Data Visualization</span>
             </div>
-            <a href="#" class="download-btn" target="_blank">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                下载 APK
-            </a>
-        </article>
+            <div class="image-showcase phones fade-in fade-in-delay-2">
+                <img src="Web/assets/ring-health.png" alt="Smart Ring health dashboard">
+                <img src="Web/assets/ring-sleep.png" alt="Smart Ring sleep tracking">
+                <img src="Web/assets/ring-device.png" alt="Smart Ring device management">
+            </div>
+            <div class="btn-row fade-in fade-in-delay-3">
+                <a href="#" class="btn btn-secondary" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    下载 APK
+                </a>
+            </div>
+        </div>
+    </section>
 
-        <article class="project">
-            <div class="project-image">
-                <img src="Web/assets/lingualive-hero.svg" alt="LinguaLive offline translation app">
-            </div>
-            <h2>LinguaLive</h2>
-            <div class="project-meta">
-                <span class="tag">Android</span>
-                <span class="tag">Offline AI</span>
-                <span class="tag">N4VR470132</span>
-            </div>
-            <p>
-                完全离线运行的实时翻译与语音识别应用。集成 Whisper 语音引擎与 CTranslate2 神经机器翻译，无需网络即可语音转文字并翻译为目标语言。支持中、英、日、韩、法、德等 9 种语言互译，具备对话模式、实时字幕流式显示、相机 OCR 翻译等能力。所有推理在设备端完成，保护隐私，单句延迟低于 2 秒。
-            </p>
-            <div class="tech-stack">
+    <section class="project-section white" id="lingualive">
+        <div class="project-content">
+            <p class="overline fade-in">Android · Offline AI</p>
+            <h2 class="fade-in">LinguaLive</h2>
+            <p class="description fade-in fade-in-delay-1">完全离线的实时翻译与语音识别。集成 Whisper 引擎与 CTranslate2 神经翻译，支持 9 种语言互译，所有推理在设备端完成，单句延迟低于 2 秒。</p>
+            <div class="tech-tags fade-in fade-in-delay-2">
                 <span>Kotlin</span>
-                <span>Whisper (on-device)</span>
+                <span>Whisper</span>
                 <span>CTranslate2</span>
                 <span>NLLB-200</span>
                 <span>Piper TTS</span>
                 <span>JNI / C++</span>
             </div>
-            <a href="https://github.com/lixiao000018/LinguaLive/blob/main/release/app-release.apk" class="download-btn" target="_blank">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                下载 APK
-            </a>
-        </article>
-
-    </div>
+            <div class="image-showcase full fade-in fade-in-delay-2">
+                <img src="Web/assets/lingualive-hero.svg" alt="LinguaLive offline translation app">
+            </div>
+            <div class="btn-row fade-in fade-in-delay-3">
+                <a href="https://github.com/lixiao000018/LinguaLive/blob/main/release/app-release.apk" class="btn btn-primary" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    下载 APK
+                </a>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <p>Built with Vibe Coding — AI-assisted development, human-driven design.</p>
     </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
