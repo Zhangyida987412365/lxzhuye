@@ -924,9 +924,277 @@
             transform: translate(-50%, -50%);
             white-space: nowrap;
         }
+
+        /* ===== Splash Screen Overlay ===== */
+        body.splash-active {
+            overflow: hidden;
+        }
+
+        .splash-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-bg);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .splash-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .splash-bg-effects {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .splash-bg-effects .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: orb-float 6s ease-in-out infinite;
+        }
+
+        .splash-bg-effects .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 107, 0, 0.15);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .splash-bg-effects .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: rgba(230, 57, 70, 0.12);
+            bottom: -80px;
+            left: -80px;
+            animation-delay: 2s;
+        }
+
+        .splash-bg-effects .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: rgba(124, 77, 255, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 4s;
+        }
+
+        @keyframes orb-float {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            33% { transform: scale(1.1) translate(20px, -20px); }
+            66% { transform: scale(0.95) translate(-15px, 15px); }
+        }
+
+        .splash-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            border-radius: 28px;
+            padding: 50px 60px;
+            max-width: 560px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(255, 107, 0, 0.1), 0 30px 60px rgba(0,0,0,0.5);
+            animation: splash-card-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes splash-card-in {
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .splash-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: var(--gradient-fire);
+            border-radius: 2px;
+        }
+
+        .splash-emblem {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 24px;
+            background: var(--gradient-fire);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            box-shadow: 0 0 40px rgba(255, 107, 0, 0.35);
+            animation: emblem-pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes emblem-pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,107,0,0.3); transform: scale(1); }
+            50% { box-shadow: 0 0 55px rgba(255,107,0,0.55); transform: scale(1.06); }
+        }
+
+        .splash-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        .splash-name {
+            font-size: clamp(24px, 5vw, 34px);
+            font-weight: 900;
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .splash-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-fire);
+            margin: 0 auto 16px;
+            border-radius: 1px;
+        }
+
+        .splash-message {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .splash-message strong {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .splash-btn {
+            padding: 16px 48px;
+            background: var(--gradient-fire);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font-thai);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .splash-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            animation: shimmer 2.5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .splash-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 14px 40px rgba(255, 107, 0, 0.45);
+        }
+
+        .splash-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .splash-footer-text {
+            margin-top: 20px;
+            font-size: 12px;
+            color: rgba(160, 160, 184, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .splash-sparkles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            animation: sparkle-float 4s ease-in-out infinite;
+        }
+
+        @keyframes sparkle-float {
+            0%, 100% { opacity: 0; transform: translateY(0) scale(0); }
+            50% { opacity: 1; transform: translateY(-40px) scale(1); }
+        }
     </style>
 </head>
-<body>
+<body class="splash-active">
+
+    <!-- ===== Splash Screen Overlay ===== -->
+    <div class="splash-overlay" id="splashOverlay">
+        <div class="splash-bg-effects">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+        <div class="splash-sparkles">
+            <div class="sparkle" style="top:15%;left:20%;animation-delay:0s;"></div>
+            <div class="sparkle" style="top:25%;left:75%;animation-delay:0.5s;"></div>
+            <div class="sparkle" style="top:60%;left:15%;animation-delay:1s;"></div>
+            <div class="sparkle" style="top:70%;left:80%;animation-delay:1.5s;"></div>
+            <div class="sparkle" style="top:40%;left:50%;animation-delay:2s;"></div>
+            <div class="sparkle" style="top:80%;left:40%;animation-delay:2.5s;"></div>
+            <div class="sparkle" style="top:10%;left:60%;animation-delay:3s;"></div>
+            <div class="sparkle" style="top:50%;left:90%;animation-delay:3.5s;"></div>
+        </div>
+        <div class="splash-card">
+            <div class="splash-emblem">🔥</div>
+            <div class="splash-title">เว็บไซต์นี้จัดทำขึ้นเป็นพิเศษสำหรับ</div>
+            <div class="splash-name">กรองน้ำยอดนักบิด</div>
+            <div class="splash-divider"></div>
+            <p class="splash-message">
+                ยินดีต้อนรับสู่โลกแห่งนินจา!<br>
+                เว็บไซต์นี้ถูกสร้างขึ้นเป็น<strong>พิเศษเฉพาะ</strong>สำหรับคุณ<br>
+                เพื่อมอบประสบการณ์เกมนารูโตะที่ดีที่สุด 🥷
+            </p>
+            <button class="splash-btn" id="splashEnterBtn" onclick="dismissSplash()">เข้าสู่เว็บไซต์ →</button>
+            <div class="splash-footer-text">NARUTO WORLD GAME © 2026</div>
+        </div>
+    </div>
 
     <!-- Kanji Watermark -->
     <div class="kanji-watermark">忍</div>
@@ -1386,6 +1654,15 @@
             const walk = (x - startX) * 2;
             scrollContainer.scrollLeft = scrollLeft - walk;
         });
+        // ===== Splash Screen Dismiss =====
+        function dismissSplash() {
+            const splash = document.getElementById('splashOverlay');
+            splash.classList.add('hidden');
+            document.body.classList.remove('splash-active');
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 800);
+        }
     </script>
 </body>
 </html>
