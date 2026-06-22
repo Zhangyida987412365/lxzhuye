@@ -3,58 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Coding Portfolio</title>
+    <title>Vibe Coding — Selected Work</title>
     <style>
+        :root {
+            --bg: #0a0a0b;
+            --bg-soft: #111113;
+            --line: rgba(255, 255, 255, 0.10);
+            --line-soft: rgba(255, 255, 255, 0.06);
+            --ink: #f4f4f2;
+            --ink-dim: #8a8a86;
+            --ink-faint: #5a5a57;
+            --accent: #e8e4d8;
+            --mono: 'SF Mono', 'JetBrains Mono', 'Roboto Mono', ui-monospace, 'Menlo', monospace;
+            --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
-            background: #000;
-            color: #1d1d1f;
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--ink);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Film grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom cursor */
+        .cursor-dot, .cursor-ring {
+            position: fixed;
+            top: 0; left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+        .cursor-dot {
+            width: 6px; height: 6px;
+            background: #fff;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-ring {
+            width: 34px; height: 34px;
+            border: 1px solid rgba(255,255,255,0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+        }
+        .cursor-ring.hovering {
+            width: 56px; height: 56px;
+            border-color: rgba(255,255,255,0.9);
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            body { cursor: auto; }
+            .cursor-dot, .cursor-ring { display: none; }
+        }
+
+        /* Scroll progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            width: 0%;
+            background: var(--ink);
+            z-index: 200;
+            transition: width 0.1s linear;
         }
 
         /* Navigation */
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 0 48px;
-            height: 52px;
+            top: 0; left: 0; right: 0;
+            z-index: 150;
+            padding: 22px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            mix-blend-mode: difference;
         }
 
         nav .logo {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #f5f5f7;
-            letter-spacing: -0.01em;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #fff;
         }
 
-        nav .nav-links {
+        nav .nav-meta {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            color: #fff;
             display: flex;
-            gap: 32px;
+            gap: 28px;
         }
 
-        nav .nav-links a {
-            color: #a1a1a6;
+        nav .nav-meta a {
+            color: #fff;
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 400;
-            transition: color 0.3s;
+            opacity: 0.7;
+            transition: opacity 0.3s;
         }
+        nav .nav-meta a:hover { opacity: 1; }
 
-        nav .nav-links a:hover {
-            color: #f5f5f7;
+        @media (max-width: 600px) {
+            nav { padding: 18px 22px; }
+            nav .nav-meta { gap: 16px; }
+            nav .nav-meta .hide-sm { display: none; }
         }
 
         /* Hero */
@@ -62,455 +133,590 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 120px 24px;
-            background: #000;
+            padding: 120px 40px 80px;
             position: relative;
-            overflow: hidden;
+            border-bottom: 1px solid var(--line-soft);
         }
 
-        .hero::before {
+        .hero .kicker {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--ink-dim);
+            margin-bottom: 36px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            overflow: hidden;
+        }
+        .hero .kicker .line {
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+            max-width: 0;
+            transition: max-width 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s;
+        }
+        .hero.loaded .kicker .line { max-width: 320px; }
+
+        .hero h1 {
+            font-size: clamp(3.2rem, 13vw, 11rem);
+            font-weight: 600;
+            letter-spacing: -0.04em;
+            line-height: 0.9;
+            color: var(--ink);
+        }
+
+        .hero h1 .reveal-line {
+            display: block;
+            overflow: hidden;
+        }
+        .hero h1 .reveal-line span {
+            display: block;
+            transform: translateY(105%);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero.loaded h1 .reveal-line:nth-child(1) span { transition-delay: 0.15s; }
+        .hero.loaded h1 .reveal-line:nth-child(2) span { transition-delay: 0.28s; }
+        .hero.loaded h1 .reveal-line span { transform: translateY(0); }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--ink-dim);
+        }
+
+        .hero .lede {
+            margin-top: 48px;
+            max-width: 540px;
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
+            line-height: 1.55;
+            color: var(--ink-dim);
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease 0.7s, transform 1s ease 0.7s;
+        }
+        .hero.loaded .lede { opacity: 1; transform: translateY(0); }
+
+        .hero .hero-foot {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            right: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
+            opacity: 0;
+            transition: opacity 1s ease 1s;
+        }
+        .hero.loaded .hero-foot { opacity: 1; }
+
+        .hero .scroll-cue {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hero .scroll-cue svg {
+            animation: bob 2s ease-in-out infinite;
+        }
+        @keyframes bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        @media (max-width: 600px) {
+            .hero { padding: 100px 22px 70px; }
+            .hero-foot { left: 22px; right: 22px; }
+            .hero .hero-foot .hide-sm { display: none; }
+        }
+
+        /* Project sections */
+        .project {
+            padding: 130px 40px;
+            border-bottom: 1px solid var(--line-soft);
+            position: relative;
+        }
+
+        .project-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .project-head {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            margin-bottom: 64px;
+        }
+
+        .project-index {
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            letter-spacing: 0.2em;
+            color: var(--ink-faint);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .project-index .bar {
+            width: 40px;
+            height: 1px;
+            background: var(--ink-faint);
+        }
+
+        .project h2 {
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 0.98;
+            color: var(--ink);
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            align-items: baseline;
+            border-top: 1px solid var(--line-soft);
+            padding-top: 22px;
+        }
+        .project-meta .label {
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            display: block;
+            margin-bottom: 7px;
+        }
+        .project-meta .value {
+            font-size: 0.9rem;
+            color: var(--ink-dim);
+            line-height: 1.5;
+        }
+        .project-meta .col-desc { flex: 1 1 360px; max-width: 560px; }
+        .project-meta .value.lead { color: var(--ink); }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 4px;
+        }
+        .tags span {
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.05em;
+            padding: 4px 11px;
+            border: 1px solid var(--line);
+            border-radius: 980px;
+            color: var(--ink-dim);
+            transition: border-color 0.3s, color 0.3s;
+        }
+        .tags span:hover { border-color: var(--ink-dim); color: var(--ink); }
+
+        /* Showcase frames */
+        .frame {
+            position: relative;
+            overflow: hidden;
+            border-radius: 14px;
+            border: 1px solid var(--line-soft);
+            background: var(--bg-soft);
+        }
+        .frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scale(1.06);
+            transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .frame.in img { transform: scale(1); }
+        .frame:hover img { transform: scale(1.04); }
+
+        .showcase-landscape {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .showcase-landscape .frame { aspect-ratio: 16 / 11; }
+
+        .showcase-phones {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+        .showcase-phones .frame {
+            aspect-ratio: 9 / 19;
+            border-radius: 26px;
+        }
+        .showcase-phones .frame img { object-fit: contain; transform: scale(1.04); padding: 0; }
+        .showcase-phones .frame.in img { transform: scale(1); }
+        .showcase-phones .frame:hover img { transform: scale(1.02); }
+
+        .showcase-full .frame {
+            aspect-ratio: 3 / 1;
+        }
+        .showcase-full .frame img { object-fit: contain; background: #f5f5f7; }
+
+        /* CTA links */
+        .cta-row {
+            margin-top: 48px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--ink);
+            padding: 14px 26px;
+            border: 1px solid var(--line);
+            border-radius: 980px;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s;
+        }
+        .cta span { position: relative; z-index: 1; }
+        .cta::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(66, 133, 244, 0.08) 0%, transparent 70%);
+            inset: 0;
+            background: var(--ink);
+            transform: translateY(101%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cta:hover { color: var(--bg); }
+        .cta:hover::before { transform: translateY(0); }
+        .cta svg { width: 15px; height: 15px; position: relative; z-index: 1; }
+        .cta.disabled {
+            color: var(--ink-faint);
+            border-color: var(--line-soft);
             pointer-events: none;
         }
 
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            color: #f5f5f7;
-            line-height: 1.05;
-            margin-bottom: 24px;
+        /* Reveal utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(34px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        .hero h1 span {
-            background: linear-gradient(90deg, #2997ff, #6366f1, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero .subtitle {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: #86868b;
-            max-width: 600px;
-            line-height: 1.5;
-            font-weight: 400;
-        }
-
-        .hero .scroll-hint {
-            position: absolute;
-            bottom: 48px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #6e6e73;
-            font-size: 0.8rem;
-            animation: float 2s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(8px); }
-        }
-
-        /* Project Sections */
-        .project-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 24px;
-            position: relative;
-        }
-
-        .project-section.light {
-            background: #f5f5f7;
-        }
-
-        .project-section.dark {
-            background: #000;
-        }
-
-        .project-section.white {
-            background: #fff;
-        }
-
-        .project-content {
-            max-width: 1120px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .project-content .overline {
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .project-section.dark .overline {
-            color: #a1a1a6;
-        }
-
-        .project-section.light .overline,
-        .project-section.white .overline {
-            color: #6e6e73;
-        }
-
-        .project-content h2 {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-            margin-bottom: 16px;
-        }
-
-        .project-section.dark h2 {
-            color: #f5f5f7;
-        }
-
-        .project-section.light h2,
-        .project-section.white h2 {
-            color: #1d1d1f;
-        }
-
-        .project-content .description {
-            font-size: clamp(1rem, 1.5vw, 1.25rem);
-            line-height: 1.6;
-            max-width: 680px;
-            margin: 0 auto 20px;
-        }
-
-        .project-section.dark .description {
-            color: #86868b;
-        }
-
-        .project-section.light .description,
-        .project-section.white .description {
-            color: #6e6e73;
-        }
-
-        .project-content .tech-tags {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 48px;
-        }
-
-        .tech-tags span {
-            font-size: 0.75rem;
-            padding: 5px 14px;
-            border-radius: 980px;
-            font-weight: 500;
-        }
-
-        .project-section.dark .tech-tags span {
-            background: rgba(255, 255, 255, 0.08);
-            color: #a1a1a6;
-        }
-
-        .project-section.light .tech-tags span,
-        .project-section.white .tech-tags span {
-            background: rgba(0, 0, 0, 0.05);
-            color: #6e6e73;
-        }
-
-        /* Image displays */
-        .image-showcase {
-            width: 100%;
-            margin-top: 24px;
-        }
-
-        .image-showcase.landscape {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .image-showcase.landscape img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-            display: block;
-            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-
-        .image-showcase.landscape img:hover {
-            transform: scale(1.02);
-        }
-
-        .image-showcase.phones {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 32px;
-            padding: 40px 0;
-        }
-
-        .image-showcase.phones img {
-            height: clamp(360px, 50vh, 560px);
-            width: auto;
-            border-radius: 20px;
-            display: block;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-
-        .image-showcase.phones img:hover {
-            transform: translateY(-8px);
-        }
-
-        .image-showcase.full img {
-            width: 100%;
-            max-width: 900px;
-            height: auto;
-            border-radius: 16px;
-            display: block;
-            margin: 0 auto;
-            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-
-        .image-showcase.full img:hover {
-            transform: scale(1.02);
-        }
-
-        /* Buttons */
-        .btn-row {
-            margin-top: 32px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 32px;
-            border-radius: 980px;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: #0071e3;
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: #0077ed;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #2997ff;
-            border: 1px solid #2997ff;
-        }
-
-        .btn-secondary:hover {
-            background: #2997ff;
-            color: #fff;
-        }
-
-        .project-section.dark .btn-secondary {
-            color: #2997ff;
-            border-color: #2997ff;
-        }
-
-        .btn svg {
-            width: 16px;
-            height: 16px;
-        }
+        .reveal.in { opacity: 1; transform: translateY(0); }
+        .d1 { transition-delay: 0.08s; }
+        .d2 { transition-delay: 0.16s; }
+        .d3 { transition-delay: 0.24s; }
+        .d4 { transition-delay: 0.32s; }
 
         /* Footer */
         footer {
-            padding: 48px 24px;
-            text-align: center;
-            background: #000;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 110px 40px 60px;
+            position: relative;
         }
-
-        footer p {
-            color: #6e6e73;
-            font-size: 0.85rem;
+        .footer-inner { max-width: 1280px; margin: 0 auto; }
+        footer h3 {
+            font-size: clamp(2rem, 7vw, 5.5rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 0.95;
+            margin-bottom: 56px;
         }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+        footer h3 em { font-style: italic; font-weight: 400; color: var(--ink-dim); }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 32px;
+            border-top: 1px solid var(--line-soft);
+            padding-top: 32px;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
         }
+        .footer-grid a { color: var(--ink-dim); text-decoration: none; transition: color 0.3s; }
+        .footer-grid a:hover { color: var(--ink); }
+        .footer-links { display: flex; gap: 26px; flex-wrap: wrap; }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .fade-in-delay-1 { transition-delay: 0.1s; }
-        .fade-in-delay-2 { transition-delay: 0.2s; }
-        .fade-in-delay-3 { transition-delay: 0.3s; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav { padding: 0 20px; }
-            nav .nav-links { gap: 20px; }
-
-            .project-section { padding: 80px 20px; min-height: auto; }
-
-            .image-showcase.landscape {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .image-showcase.phones {
-                gap: 12px;
+        @media (max-width: 820px) {
+            .showcase-landscape { grid-template-columns: 1fr; }
+            .showcase-phones {
+                display: flex;
                 overflow-x: auto;
-                justify-content: flex-start;
-                padding: 20px;
+                scroll-snap-type: x mandatory;
                 -webkit-overflow-scrolling: touch;
+                gap: 14px;
+                padding-bottom: 8px;
             }
-
-            .image-showcase.phones img {
-                height: 380px;
-                flex-shrink: 0;
+            .showcase-phones .frame {
+                flex: 0 0 70%;
+                scroll-snap-align: center;
             }
-
-            .btn { padding: 12px 24px; font-size: 0.85rem; }
+            .showcase-full .frame { aspect-ratio: 4 / 3; }
         }
 
-        @media (max-width: 480px) {
-            nav .nav-links a { font-size: 0.7rem; }
-            nav .nav-links { gap: 16px; }
+        @media (max-width: 600px) {
+            .project { padding: 90px 22px; }
+            footer { padding: 80px 22px 50px; }
+        }
 
-            .image-showcase.phones img {
-                height: 320px;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+            .reveal, .hero .lede, .hero h1 .reveal-line span { opacity: 1; transform: none; }
+            .frame img { transform: none; }
         }
     </style>
 </head>
 <body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <div class="progress-bar"></div>
+
     <nav>
         <div class="logo">Vibe Coding</div>
-        <div class="nav-links">
-            <a href="#whiteboard">Whiteboard</a>
-            <a href="#vitality">Vitality</a>
-            <a href="#lingualive">LinguaLive</a>
+        <div class="nav-meta">
+            <a href="#work">Work</a>
+            <a href="#whiteboard" class="hide-sm">01</a>
+            <a href="#vitality" class="hide-sm">02</a>
+            <a href="#lingualive" class="hide-sm">03</a>
+            <a href="#contact">Index</a>
         </div>
     </nav>
 
-    <section class="hero">
-        <h1 class="fade-in">用代码<span>创造产品</span></h1>
-        <p class="subtitle fade-in fade-in-delay-1">AI 辅助编程构建的真实应用。从想法到可运行的产品，探索人机协作的无限可能。</p>
-        <div class="scroll-hint">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    <header class="hero" id="top">
+        <div class="kicker">
+            Selected Work — 2026
+            <span class="line"></span>
         </div>
-    </section>
+        <h1>
+            <span class="reveal-line"><span>用代码</span></span>
+            <span class="reveal-line"><span><em>创造</em>产品</span></span>
+        </h1>
+        <p class="lede">AI 辅助编程构建的真实应用。从一个想法到可运行的产品 —— 这是人与机器协作的一份记录。</p>
+        <div class="hero-foot">
+            <span class="hide-sm">003 — Projects</span>
+            <div class="scroll-cue">
+                Scroll
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </div>
+            <span class="hide-sm">Android · On-device AI</span>
+        </div>
+    </header>
 
-    <section class="project-section light" id="whiteboard">
-        <div class="project-content">
-            <p class="overline fade-in">Android · Large Screen</p>
-            <h2 class="fade-in">Collaborate Whiteboard</h2>
-            <p class="description fade-in fade-in-delay-1">面向企业会议室和教育场景的智能交互大屏白板。无限画布、多点触控书写、AI 形状矫正，适配 65~98 寸设备，支持多人同屏协作。</p>
-            <div class="tech-tags fade-in fade-in-delay-2">
-                <span>Kotlin</span>
-                <span>Jetpack Compose</span>
-                <span>Canvas Engine</span>
-                <span>Hilt DI</span>
-                <span>Multi-touch</span>
+    <main id="work">
+        <!-- 01 Whiteboard -->
+        <section class="project" id="whiteboard">
+            <div class="project-inner">
+                <div class="project-head">
+                    <div class="project-index reveal">( 01 ) <span class="bar"></span> Collaboration Tool</div>
+                    <h2 class="reveal d1">Collaborate<br>Whiteboard</h2>
+                </div>
+
+                <div class="showcase-landscape">
+                    <div class="frame reveal"><img src="Web/assets/whiteboard-canvas.png" alt="无限画布与智能形状识别工具面板"></div>
+                    <div class="frame reveal d2"><img src="Web/assets/whiteboard-notes.png" alt="多人协作便签与网格画布"></div>
+                </div>
+
+                <div class="project-meta reveal" style="margin-top:56px;">
+                    <div class="col-desc">
+                        <span class="label">Overview</span>
+                        <p class="value lead">面向企业会议室与教育场景的智能交互大屏白板。无限画布、多点触控书写、AI 形状矫正，适配 65–98 寸设备，支持多人同屏实时协作。</p>
+                    </div>
+                    <div>
+                        <span class="label">Platform</span>
+                        <p class="value">Android · Large Screen</p>
+                    </div>
+                    <div>
+                        <span class="label">Role</span>
+                        <p class="value">Design · Engineering</p>
+                    </div>
+                    <div style="flex:1 1 100%;">
+                        <span class="label">Stack</span>
+                        <div class="tags">
+                            <span>Kotlin</span><span>Jetpack Compose</span><span>Canvas Engine</span><span>Hilt DI</span><span>Multi-touch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-row reveal">
+                    <a href="https://github.com/lixiao000018/Whiteboard/blob/main/app/build/outputs/apk/debug/app-debug.apk" class="cta" target="_blank" rel="noopener" data-hover>
+                        <span>Download APK</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </a>
+                </div>
             </div>
-            <div class="image-showcase landscape fade-in fade-in-delay-2">
-                <img src="Web/assets/whiteboard-canvas.png" alt="Whiteboard canvas with shape tools">
-                <img src="Web/assets/whiteboard-notes.png" alt="Whiteboard with sticky notes">
+        </section>
+
+        <!-- 02 Vitality -->
+        <section class="project" id="vitality">
+            <div class="project-inner">
+                <div class="project-head">
+                    <div class="project-index reveal">( 02 ) <span class="bar"></span> Health & Wearable</div>
+                    <h2 class="reveal d1">Editorial<br>Vitality</h2>
+                </div>
+
+                <div class="showcase-phones">
+                    <div class="frame reveal"><img src="Web/assets/ring-health.png" alt="智能戒指健康总览仪表盘"></div>
+                    <div class="frame reveal d2"><img src="Web/assets/ring-sleep.png" alt="睡眠分期分析界面"></div>
+                    <div class="frame reveal d3"><img src="Web/assets/ring-device.png" alt="戒指设备连接与管理"></div>
+                </div>
+
+                <div class="project-meta reveal" style="margin-top:56px;">
+                    <div class="col-desc">
+                        <span class="label">Overview</span>
+                        <p class="value lead">智能戒指配套健康管理应用。通过蓝牙连接 SY02 戒指，实时采集心率、血氧、HRV，提供睡眠分期分析与运动追踪。深色沉浸式设计，让数据可视化直观清晰。</p>
+                    </div>
+                    <div>
+                        <span class="label">Platform</span>
+                        <p class="value">Android · Smart Ring</p>
+                    </div>
+                    <div>
+                        <span class="label">Role</span>
+                        <p class="value">Design · Engineering</p>
+                    </div>
+                    <div style="flex:1 1 100%;">
+                        <span class="label">Stack</span>
+                        <div class="tags">
+                            <span>Kotlin</span><span>Jetpack Compose</span><span>BLE</span><span>Health Sensors</span><span>Data Visualization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-row reveal">
+                    <a href="#" class="cta disabled" aria-disabled="true">
+                        <span>APK Coming Soon</span>
+                    </a>
+                </div>
             </div>
-            <div class="btn-row fade-in fade-in-delay-3">
-                <a href="https://github.com/lixiao000018/Whiteboard/blob/main/app/build/outputs/apk/debug/app-debug.apk" class="btn btn-primary" target="_blank">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    下载 APK
-                </a>
+        </section>
+
+        <!-- 03 LinguaLive -->
+        <section class="project" id="lingualive">
+            <div class="project-inner">
+                <div class="project-head">
+                    <div class="project-index reveal">( 03 ) <span class="bar"></span> Offline AI</div>
+                    <h2 class="reveal d1">LinguaLive</h2>
+                </div>
+
+                <div class="showcase-full">
+                    <div class="frame reveal"><img src="Web/assets/lingualive-hero.svg" alt="LinguaLive 离线实时翻译应用"></div>
+                </div>
+
+                <div class="project-meta reveal" style="margin-top:56px;">
+                    <div class="col-desc">
+                        <span class="label">Overview</span>
+                        <p class="value lead">完全离线的实时翻译与语音识别。集成 Whisper 引擎与 CTranslate2 神经翻译，支持 9 种语言互译，所有推理在设备端完成，单句延迟低于 2 秒。</p>
+                    </div>
+                    <div>
+                        <span class="label">Platform</span>
+                        <p class="value">Android · On-device</p>
+                    </div>
+                    <div>
+                        <span class="label">Role</span>
+                        <p class="value">Design · Engineering</p>
+                    </div>
+                    <div style="flex:1 1 100%;">
+                        <span class="label">Stack</span>
+                        <div class="tags">
+                            <span>Kotlin</span><span>Whisper</span><span>CTranslate2</span><span>NLLB-200</span><span>Piper TTS</span><span>JNI / C++</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-row reveal">
+                    <a href="https://github.com/lixiao000018/LinguaLive/blob/main/release/app-release.apk" class="cta" target="_blank" rel="noopener" data-hover>
+                        <span>Download APK</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="footer-inner">
+            <h3 class="reveal">用代码，<em>持续</em><br>创造下一个产品。</h3>
+            <div class="footer-grid reveal d1">
+                <span>© 2026 Vibe Coding</span>
+                <div class="footer-links">
+                    <a href="https://github.com/lixiao000018" target="_blank" rel="noopener" data-hover>GitHub</a>
+                    <a href="#top" data-hover>Back to top ↑</a>
+                </div>
+                <span>AI-assisted · Human-driven</span>
             </div>
         </div>
-    </section>
-
-    <section class="project-section dark" id="vitality">
-        <div class="project-content">
-            <p class="overline fade-in">Android · Smart Ring</p>
-            <h2 class="fade-in">Editorial Vitality</h2>
-            <p class="description fade-in fade-in-delay-1">智能戒指配套健康管理应用。蓝牙连接 SY02 戒指，实时采集心率、血氧、HRV 数据，提供睡眠分期分析与运动追踪。深色沉浸式设计，数据可视化直观清晰。</p>
-            <div class="tech-tags fade-in fade-in-delay-2">
-                <span>Kotlin</span>
-                <span>Jetpack Compose</span>
-                <span>BLE</span>
-                <span>Health Sensors</span>
-                <span>Data Visualization</span>
-            </div>
-            <div class="image-showcase phones fade-in fade-in-delay-2">
-                <img src="Web/assets/ring-health.png" alt="Smart Ring health dashboard">
-                <img src="Web/assets/ring-sleep.png" alt="Smart Ring sleep tracking">
-                <img src="Web/assets/ring-device.png" alt="Smart Ring device management">
-            </div>
-            <div class="btn-row fade-in fade-in-delay-3">
-                <a href="#" class="btn btn-secondary" target="_blank">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    下载 APK
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section class="project-section white" id="lingualive">
-        <div class="project-content">
-            <p class="overline fade-in">Android · Offline AI</p>
-            <h2 class="fade-in">LinguaLive</h2>
-            <p class="description fade-in fade-in-delay-1">完全离线的实时翻译与语音识别。集成 Whisper 引擎与 CTranslate2 神经翻译，支持 9 种语言互译，所有推理在设备端完成，单句延迟低于 2 秒。</p>
-            <div class="tech-tags fade-in fade-in-delay-2">
-                <span>Kotlin</span>
-                <span>Whisper</span>
-                <span>CTranslate2</span>
-                <span>NLLB-200</span>
-                <span>Piper TTS</span>
-                <span>JNI / C++</span>
-            </div>
-            <div class="image-showcase full fade-in fade-in-delay-2">
-                <img src="Web/assets/lingualive-hero.svg" alt="LinguaLive offline translation app">
-            </div>
-            <div class="btn-row fade-in fade-in-delay-3">
-                <a href="https://github.com/lixiao000018/LinguaLive/blob/main/release/app-release.apk" class="btn btn-primary" target="_blank">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    下载 APK
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>Built with Vibe Coding — AI-assisted development, human-driven design.</p>
     </footer>
 
     <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+        // Custom cursor
+        (function () {
+            const dot = document.querySelector('.cursor-dot');
+            const ring = document.querySelector('.cursor-ring');
+            if (!dot || !ring || window.matchMedia('(pointer: coarse)').matches) return;
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+            let mx = 0, my = 0, rx = 0, ry = 0;
+            window.addEventListener('mousemove', (e) => {
+                mx = e.clientX; my = e.clientY;
+                dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+            });
+            (function loop() {
+                rx += (mx - rx) * 0.18;
+                ry += (my - ry) * 0.18;
+                ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+                requestAnimationFrame(loop);
+            })();
+
+            const hoverables = document.querySelectorAll('a, [data-hover], .frame');
+            hoverables.forEach(el => {
+                el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+            });
+        })();
+
+        // Scroll progress
+        (function () {
+            const bar = document.querySelector('.progress-bar');
+            const onScroll = () => {
+                const h = document.documentElement;
+                const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+                bar.style.width = (scrolled * 100) + '%';
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
+
+        // Reveal on scroll
+        (function () {
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in');
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+            document.querySelectorAll('.reveal, .frame').forEach(el => io.observe(el));
+        })();
+
+        // Hero intro
+        window.addEventListener('load', () => {
+            requestAnimationFrame(() => document.querySelector('.hero').classList.add('loaded'));
+        });
+        // Fallback if load already fired
+        if (document.readyState === 'complete') {
+            document.querySelector('.hero').classList.add('loaded');
+        }
     </script>
 </body>
 </html>
